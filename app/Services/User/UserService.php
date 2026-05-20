@@ -3,6 +3,7 @@
 namespace App\Services\User;
 
 use App\Exceptions\UserNotFoundException;
+use App\Models\Post;
 use App\Models\User;
 
 class UserService
@@ -33,5 +34,17 @@ class UserService
         }
 
         return $user;
+    }
+
+    public function getUserPosts(int $userId, array $paginationOptions)
+    {
+        return Post::query()
+            ->where([
+                'user_id' => $userId,
+            ])
+            ->paginate(
+                perPage: $paginationOptions['pageSize'] ?? 25,
+                page: $paginationOptions['page'] ?? 1
+            );
     }
 }

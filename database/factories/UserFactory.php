@@ -31,14 +31,13 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'cellphone' => fake()->unique()->phoneNumber(),
-            'country_id' => Country::factory(),
+            'country_id' => Country::query()->inRandomOrder()->value('id'),
             'status' => fake()->randomElement([
                 'pending',
                 'active',
                 'suspended',
                 'disabled',
             ]),
-
             'last_login_at' => fake()->optional(0.8)->dateTimeBetween('-4 weeks', 'now'),
         ];
     }
