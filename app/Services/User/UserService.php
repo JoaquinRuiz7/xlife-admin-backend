@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Exceptions\UserNotFoundException;
 use App\Models\User;
 
 class UserService
@@ -17,7 +18,20 @@ class UserService
                         ->orWhere('email', 'like', "%{$search}%");
                 });
             })
-            ->paginate(perPage: $filters['pageSize'] ?? 25,
-                page: $filters['page'] ?? 1);
+            ->paginate(
+                perPage: $filters['pageSize'] ?? 25,
+                page: $filters['page'] ?? 1
+            );
+    }
+
+    public function show(int $userId)
+    {
+        $user = User::whereId($userId)->first();
+
+        if (! $user) {
+            throw new UserNotFoundException;
+        }
+
+        return $user;
     }
 }

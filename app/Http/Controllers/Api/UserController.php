@@ -7,6 +7,7 @@ use App\Http\Helper\PaginatedResponse;
 use App\Http\Requests\Users\IndexUsersRequest;
 use App\Http\Resources\UserResource;
 use App\Services\User\UserService;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class UserController extends Controller
 {
@@ -14,9 +15,14 @@ class UserController extends Controller
     {
     }
 
-    public function index(IndexUsersRequest $fetchUsersRequest)
+    public function index(IndexUsersRequest $indexUsersRequest)
     {
-        $users = $this->userService->index($fetchUsersRequest->validated());
+        $users = $this->userService->index($indexUsersRequest->validated());
         return PaginatedResponse::make($users, UserResource::class);
+    }
+
+    public function show(int $userId)
+    {
+        return response(UserResource::make($this->userService->show($userId)), ResponseAlias::HTTP_OK);
     }
 }

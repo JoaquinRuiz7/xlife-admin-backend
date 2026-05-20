@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 class UsersApiTest extends TestCase
 {
-
     use RefreshDatabase;
 
     public function test_it_returns_paginated_users(): void
@@ -75,5 +74,39 @@ class UsersApiTest extends TestCase
             ->assertOk()
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.name', 'John Doe');
+    }
+
+    public function test_get_user_by_id(): void
+    {
+        $user = User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+        ]);
+
+        $response = $this->getJson("/api/users/$user->id");
+        $response
+            ->assertOk()
+            ->assertJson([
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'cellphone' => $user->cellphone,
+                'country' => $user->country->name,
+            ]);
+    }
+
+    public function test_user_not_found_exception(): void
+    {
+        $user = User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+        ]);
+
+        $id = $user->id + 1;
+        $response = $this->getJson("/api/users/$id");
+
+        $response
+            ->assertStatus(404)
+            ->assertJson(['message' => 'User not found.']);
     }
 }
