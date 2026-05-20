@@ -30,6 +30,7 @@ class UsersApiTest extends TestCase
                         'email',
                         'cellphone',
                         'country',
+                        'lastActive'
                     ],
                 ],
                 'meta' => [
@@ -105,6 +106,7 @@ class UsersApiTest extends TestCase
                 'cellphone' => $user->cellphone,
                 'country' => $user->country->name,
                 'registered' => $user->created_at->toISOString(),
+                'lastActive' => $user->last_login_at->diffForHumans(),
             ]);
     }
 
