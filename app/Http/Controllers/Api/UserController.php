@@ -10,12 +10,13 @@ use App\Services\User\UserService;
 
 class UserController extends Controller
 {
-    public function __construct(private readonly UserService $userService) {}
+    public function __construct(private readonly UserService $userService)
+    {
+    }
 
     public function index(IndexUsersRequest $fetchUsersRequest)
     {
         $users = $this->userService->index($fetchUsersRequest->validated());
-
         return PaginatedResponse::make($users, UserResource::class);
     }
 }
