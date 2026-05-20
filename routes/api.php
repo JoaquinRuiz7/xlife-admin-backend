@@ -23,4 +23,5 @@ Route::group(['prefix' => '/users'], function () {
     Route::get('', [UserController::class, 'index']);
     Route::get('/{userId}', [UserController::class, 'show']);
     Route::get('/{userId}/posts', [UserController::class, 'getUserPosts']);
+    Route::get('/{userId}/activity', [UserController::class, 'getUserActivity']);
 });

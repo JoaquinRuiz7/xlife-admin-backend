@@ -5,13 +5,14 @@ namespace App\Services\User;
 use App\Exceptions\UserNotFoundException;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\UserActivity;
 
 class UserService
 {
     public function index(array $filters)
     {
         return User::query()
-            ->when($filters['status'] ?? null, fn ($query, string $status) => $query->where('status', $status)
+            ->when($filters['status'] ?? null, fn($query, string $status) => $query->where('status', $status)
             )
             ->when($filters['search'] ?? null, function ($query, string $search) {
                 $query->where(function ($query) use ($search) {
@@ -29,7 +30,7 @@ class UserService
     {
         $user = User::whereId($userId)->first();
 
-        if (! $user) {
+        if (!$user) {
             throw new UserNotFoundException;
         }
 
@@ -46,5 +47,10 @@ class UserService
                 perPage: $paginationOptions['pageSize'] ?? 25,
                 page: $paginationOptions['page'] ?? 1
             );
+    }
+
+    public function getUserActivity(int $userId)
+    {
+        return UserActivity::getDailyActivityByUserId($userId);
     }
 }

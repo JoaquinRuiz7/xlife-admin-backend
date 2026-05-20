@@ -5,6 +5,8 @@ namespace Tests\Feature\Api;
 use App\Models\Country;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\UserActivity;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -168,5 +170,39 @@ class UsersApiTest extends TestCase
                     'lastPage',
                 ],
             ]);
+    }
+
+    public function test_get_user_activity(): void
+    {
+        Carbon::setTestNow('2026-05-20 00:00:00');
+
+        $user = User::factory()->create([
+            'country_id' => Country::factory()->create()->id,
+        ]);
+
+        UserActivity::factory()->create([
+            'user_id' => $user->id,
+            'started_at' => Carbon::parse('2026-05-20 10:34:00'),
+            'ended_at' => Carbon::parse('2026-05-20 11:35:00'),
+        ]);
+
+        $response = $this->getJson("/api/users/{$user->id}/activity");
+
+        $expected = collect(range(0, 23))
+            ->map(fn(int $hour) => [
+                'hour' => $hour,
+                'minutes' => match ($hour) {
+                    10 => 26,
+                    11 => 35,
+                    default => 0,
+                },
+            ])
+            ->toArray();
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson($expected);
+
+        Carbon::setTestNow();
     }
 }

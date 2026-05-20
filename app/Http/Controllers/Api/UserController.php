@@ -13,7 +13,9 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class UserController extends Controller
 {
-    public function __construct(private readonly UserService $userService) {}
+    public function __construct(private readonly UserService $userService)
+    {
+    }
 
     public function index(IndexUsersRequest $indexUsersRequest)
     {
@@ -30,5 +32,10 @@ class UserController extends Controller
     public function getUserPosts(int $userId, GetUserPostsRequest $getUserPostsRequest)
     {
         return PaginatedResponse::make($this->userService->getUserPosts($userId, $getUserPostsRequest->validated()), UserPostResource::class);
+    }
+
+    public function getUserActivity(int $userId)
+    {
+        return response($this->userService->getUserActivity($userId), ResponseAlias::HTTP_OK);
     }
 }
