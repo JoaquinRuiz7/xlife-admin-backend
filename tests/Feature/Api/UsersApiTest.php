@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Api;
 
+use App\Models\Country;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -12,7 +14,11 @@ class UsersApiTest extends TestCase
 
     public function test_it_returns_paginated_users(): void
     {
-        User::factory()->count(3)->create();
+
+        $country = Country::factory()->create();
+        User::factory()->count(3)->create([
+            'country_id' => $country->id,
+        ]);
         $response = $this->getJson('/api/users');
         $response
             ->assertOk()
@@ -37,7 +43,10 @@ class UsersApiTest extends TestCase
 
     public function test_it_accepts_page_size_query_param(): void
     {
-        User::factory()->count(20)->create();
+        $country = Country::factory()->create();
+        User::factory()->count(20)->create([
+            'country_id' => $country->id,
+        ]);
 
         $response = $this->getJson('/api/users?pageSize=5');
 
@@ -62,11 +71,13 @@ class UsersApiTest extends TestCase
         User::factory()->create([
             'name' => 'John Doe',
             'email' => 'john@example.com',
+            'country_id' => Country::factory()->create()->id,
         ]);
 
         User::factory()->create([
             'name' => 'Jane Smith',
             'email' => 'jane@example.com',
+            'country_id' => Country::factory()->create()->id,
         ]);
 
         $response = $this->getJson('/api/users?search=John');
@@ -81,6 +92,7 @@ class UsersApiTest extends TestCase
         $user = User::factory()->create([
             'name' => 'John Doe',
             'email' => 'john@example.com',
+            'country_id' => Country::factory()->create()->id,
         ]);
 
         $response = $this->getJson("/api/users/$user->id");
@@ -101,6 +113,7 @@ class UsersApiTest extends TestCase
         $user = User::factory()->create([
             'name' => 'John Doe',
             'email' => 'john@example.com',
+            'country_id' => Country::factory()->create()->id,
         ]);
 
         $id = $user->id + 1;
@@ -109,5 +122,49 @@ class UsersApiTest extends TestCase
         $response
             ->assertStatus(404)
             ->assertJson(['message' => 'User not found.']);
+    }
+
+    public function test_get_user_posts(): void
+    {
+        $user = User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'country_id' => Country::factory()->create()->id,
+        ]);
+
+        Post::factory()
+            ->count(3)
+            ->for($user)
+            ->create();
+
+        $response = $this->getJson("/api/users/{$user->id}/posts");
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonCount(3, 'data')
+            ->assertJson([
+                'meta' => [
+                    'total' => 3,
+                    'page' => 1,
+                    'pageSize' => 25,
+                    'lastPage' => 1,
+                ],
+            ])
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'user',
+                        'content',
+                        'created_at',
+                    ],
+                ],
+                'meta' => [
+                    'total',
+                    'page',
+                    'pageSize',
+                    'lastPage',
+                ],
+            ]);
     }
 }
