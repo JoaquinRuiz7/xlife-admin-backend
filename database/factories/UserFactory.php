@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -29,6 +30,17 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'cellphone' => fake()->unique()->phoneNumber(),
+            'country_id' => Country::query()->inRandomOrder()->value('id'),
+
+            'status' => fake()->randomElement([
+                'pending',
+                'active',
+                'suspended',
+                'disabled',
+            ]),
+
+            'last_login_at' => fake()->optional(0.8)->dateTimeBetween('-4 weeks', 'now'),
         ];
     }
 
