@@ -92,6 +92,7 @@ class UsersApiTest extends TestCase
                 'email' => $user->email,
                 'cellphone' => $user->cellphone,
                 'country' => $user->country->name,
+                'registered' => $user->created_at->toISOString(),
             ]);
     }
 
