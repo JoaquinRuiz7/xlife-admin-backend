@@ -39,6 +39,17 @@ class StatsService
                 'status' => ReportStatus::PENDING,
             ])
             ->count();
+    }
 
+    public function getGeographicDistribution()
+    {
+        return User::query()
+            ->from('users as u')
+            ->join('countries as c', 'c.id', '=', 'u.country_id')
+            ->select('c.name as country')
+            ->selectRaw('COUNT(u.id) as count')
+            ->groupBy('c.name')
+            ->orderByDesc('count')
+            ->get();
     }
 }

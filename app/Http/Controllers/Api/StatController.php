@@ -21,4 +21,9 @@ class StatController extends Controller
             'pendingReports' => $this->statsService->getActiveReports(),
         ], Response::HTTP_OK);
     }
+
+    public function getGeographicDistribution()
+    {
+        return $this->statsService->getGeographicDistribution();
+    }
 }

@@ -52,4 +52,5 @@ Route::group(['prefix' => '/security'], function () {
 
 Route::group(['prefix' => '/stats'], function () {
     Route::get('/overview', [StatController::class, 'getOverView']);
+    Route::get('/geographic-distribution', [StatController::class, 'getGeographicDistribution']);
 });
