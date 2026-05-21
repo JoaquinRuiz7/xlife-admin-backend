@@ -11,9 +11,7 @@ use Illuminate\Http\Response;
 class StatController extends Controller
 {
     //
-    public function __construct(private readonly StatsService $statsService)
-    {
-    }
+    public function __construct(private readonly StatsService $statsService) {}
 
     public function getOverView()
     {

@@ -12,7 +12,7 @@ class UserService
     public function getUsers(array $filters)
     {
         return User::query()
-            ->when($filters['status'] ?? null, fn($query, string $status) => $query->where('status', $status)
+            ->when($filters['status'] ?? null, fn ($query, string $status) => $query->where('status', $status)
             )
             ->when($filters['search'] ?? null, function ($query, string $search) {
                 $query->where(function ($query) use ($search) {
@@ -30,7 +30,7 @@ class UserService
     {
         $user = User::whereId($userId)->first();
 
-        if (!$user) {
+        if (! $user) {
             throw new UserNotFoundException;
         }
 
@@ -40,8 +40,8 @@ class UserService
     public function getUserPosts(int $userId, array $paginationOptions)
     {
         $userExists = User::whereId($userId)->exists();
-        if (!$userExists) {
-            throw new UserNotFoundException();
+        if (! $userExists) {
+            throw new UserNotFoundException;
         }
 
         return Post::query()
@@ -57,7 +57,7 @@ class UserService
     public function getUserActivity(int $userId)
     {
         $user = User::whereId($userId)->exists();
-        if (!$user) {
+        if (! $user) {
             throw new UserNotFoundException;
         }
 
@@ -67,7 +67,7 @@ class UserService
             ->get();
 
         $activity = collect(range(0, 23))
-            ->mapWithKeys(fn(int $hour) => [$hour => 0])
+            ->mapWithKeys(fn (int $hour) => [$hour => 0])
             ->toArray();
 
         foreach ($logs as $log) {
@@ -75,7 +75,7 @@ class UserService
             $end = $log->ended_at->copy();
 
             while ($start->lt($end)) {
-                $hour = (int)$start->format('G');
+                $hour = (int) $start->format('G');
 
                 $endOfHour = $start->copy()
                     ->startOfHour()
@@ -92,7 +92,7 @@ class UserService
         }
 
         return collect($activity)
-            ->map(fn(int $minutes, int $hour) => [
+            ->map(fn (int $minutes, int $hour) => [
                 'hour' => $hour,
                 'minutes' => min($minutes, 60),
             ])
