@@ -31,8 +31,8 @@ class UserActivity extends Model
 
     public static function getDailyActivityByUserId(int $userId): array
     {
-        if (!User::query()->whereKey($userId)->exists()) {
-            throw new UserNotFoundException();
+        if (! User::query()->whereKey($userId)->exists()) {
+            throw new UserNotFoundException;
         }
 
         $logs = self::query()
@@ -41,7 +41,7 @@ class UserActivity extends Model
             ->get();
 
         $activity = collect(range(0, 23))
-            ->mapWithKeys(fn(int $hour) => [$hour => 0])
+            ->mapWithKeys(fn (int $hour) => [$hour => 0])
             ->toArray();
 
         foreach ($logs as $log) {
@@ -49,7 +49,7 @@ class UserActivity extends Model
             $end = $log->ended_at->copy();
 
             while ($start->lt($end)) {
-                $hour = (int)$start->format('G');
+                $hour = (int) $start->format('G');
 
                 $endOfHour = $start->copy()
                     ->startOfHour()
@@ -66,7 +66,7 @@ class UserActivity extends Model
         }
 
         return collect($activity)
-            ->map(fn(int $minutes, int $hour) => [
+            ->map(fn (int $minutes, int $hour) => [
                 'hour' => $hour,
                 'minutes' => min($minutes, 60),
             ])

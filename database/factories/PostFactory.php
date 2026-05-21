@@ -20,6 +20,8 @@ class PostFactory extends Factory
         return [
             'user_id' => User::factory(),
             'content' => fake()->paragraph(),
+            'status' => fake()->randomElement(['draft', 'published', 'taken_down']),
+            'created_at' => fake()->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }
