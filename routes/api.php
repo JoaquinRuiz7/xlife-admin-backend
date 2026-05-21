@@ -29,5 +29,5 @@ Route::group(['prefix' => '/users'], function () {
 
 Route::group(['prefix' => '/posts'], function () {
     Route::get('', [PostController::class, 'getPosts']);
-    // Route::get('/{userId}', [UserController::class, 'show']);
+    Route::get('/{postId}/comments', [PostController::class, 'getPostComments']);
 });

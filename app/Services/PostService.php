@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\PostNotFoundException;
 use App\Models\Post;
 
 class PostService
@@ -19,6 +20,21 @@ class PostService
             ->paginate(
                 perPage: $filters['pageSize'] ?? 25,
                 page: $filters['page'] ?? 1
+            );
+    }
+
+    public function getPostComments(int $postId, array $pageInfo)
+    {
+        $post = Post::whereId($postId)->first();
+        if (! $post) {
+            throw new PostNotFoundException;
+        }
+
+        return $post
+            ->comments()
+            ->paginate(
+                perPage: $pageInfo['pageSize'] ?? 25,
+                page: $pageInfo['page'] ?? 1
             );
     }
 }

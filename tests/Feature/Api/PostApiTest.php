@@ -4,6 +4,7 @@ namespace Feature\Api;
 
 use App\Models\Country;
 use App\Models\Post;
+use App\Models\PostComment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -56,5 +57,32 @@ class PostApiTest extends TestCase
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors(['pageSize']);
+    }
+
+    public function test_get_post_comments(): void
+    {
+        $country = Country::factory()->create();
+
+        $user = User::factory()->create([
+            'country_id' => $country->id,
+        ]);
+
+        $post = Post::factory()
+            ->for($user)
+            ->create();
+
+        PostComment::factory()
+            ->count(12)
+            ->for($post)
+            ->for($user)
+            ->create();
+
+        $response = $this->getJson("/api/posts/{$post->id}/comments?pageSize=10");
+
+        $response
+            ->assertOk()
+            ->assertJsonCount(10, 'data')
+            ->assertJsonPath('meta.total', 12)
+            ->assertJsonPath('meta.pageSize', 10);
     }
 }
