@@ -16,7 +16,7 @@ class SecurityLogSeeder extends Seeder
         $users = User::query()->get();
 
         SecurityLog::factory()
-            ->count(100)
+            ->count(120)
             ->create([
                 'user_id' => fn () => $users->random()->id,
             ]);
