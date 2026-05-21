@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class,
             UserActivitySeeder::class,
             PostCommentsSeeder::class,
+            ReportSeeder::class,
         ]);
     }
 }

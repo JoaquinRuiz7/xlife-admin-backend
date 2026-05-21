@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Helper\PaginatedResponse;
 use App\Http\Requests\Users\GetUserPostsRequest;
-use App\Http\Requests\Users\IndexUsersRequest;
+use App\Http\Requests\Users\GetUsersRequest;
 use App\Http\Resources\UserPostResource;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
@@ -15,16 +15,16 @@ class UserController extends Controller
 {
     public function __construct(private readonly UserService $userService) {}
 
-    public function index(IndexUsersRequest $indexUsersRequest)
+    public function getUsers(GetUsersRequest $indexUsersRequest)
     {
-        $users = $this->userService->index($indexUsersRequest->validated());
+        $users = $this->userService->getUsers($indexUsersRequest->validated());
 
         return PaginatedResponse::make($users, UserResource::class);
     }
 
-    public function show(int $userId)
+    public function getById(int $userId)
     {
-        return response(UserResource::make($this->userService->show($userId)), ResponseAlias::HTTP_OK);
+        return response(UserResource::make($this->userService->getById($userId)), ResponseAlias::HTTP_OK);
     }
 
     public function getUserPosts(int $userId, GetUserPostsRequest $getUserPostsRequest)

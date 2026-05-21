@@ -55,7 +55,7 @@ class CommentApiTest extends TestCase
                         'commentedBy',
                         'comment',
                         'post',
-                        'status'
+                        'status',
                     ],
                 ],
                 'meta' => [

@@ -6,7 +6,7 @@ use App\Models\PostComment;
 
 class CommentService
 {
-    public function fetch(array $filters)
+    public function getComments(array $filters)
     {
         return PostComment::query()
             ->when($filters['status'] ?? null, fn ($query, string $status) => $query->where('status', $status)

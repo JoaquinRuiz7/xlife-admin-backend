@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Posts;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FetchPostsRequest extends FormRequest
+class GetPostsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
