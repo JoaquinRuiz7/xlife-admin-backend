@@ -2,17 +2,41 @@
 
 namespace Feature\Api;
 
+use App\Models\Country;
+use App\Models\Report;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ReportApiTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
+    use RefreshDatabase;
 
-        $response->assertStatus(200);
+    public function test_get_reports(): void
+    {
+        $country = Country::factory()->create();
+
+        $users = User::factory()
+            ->count(3)
+            ->create([
+                'country_id' => $country->id,
+            ]);
+
+        Report::factory()
+            ->count(10)
+            ->create([
+                'user_id' => fn() => $users->random()->id,
+                'reported_user_id' => fn(array $attributes) => $users
+                    ->where('id', '!=', $attributes['user_id'])
+                    ->random()
+                    ->id,
+            ]);
+
+        $response = $this->getJson('/api/reports');
+
+        $response
+            ->assertOk()
+            ->assertJsonCount(10, 'data')
+            ->assertJsonPath('meta.total', 10);
     }
 }
