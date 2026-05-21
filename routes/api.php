@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,8 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => '/users'], function () {
-    Route::get('', [UserController::class, 'index']);
-    Route::get('/{userId}', [UserController::class, 'show']);
+    Route::get('', [UserController::class, 'getUsers']);
+    Route::get('/{userId}', [UserController::class, 'getById']);
     Route::get('/{userId}/posts', [UserController::class, 'getUserPosts']);
     Route::get('/{userId}/activity', [UserController::class, 'getUserActivity']);
 });
@@ -35,4 +36,9 @@ Route::group(['prefix' => '/posts'], function () {
 
 Route::group(['prefix' => '/comments'], function () {
     Route::get('', [CommentController::class, 'getComments']);
+});
+
+Route::group(['prefix' => '/reports'], function () {
+    Route::get('', [ReportController::class, 'getReports']);
+    Route::get('/summary', [ReportController::class, 'getReportsSummary']);
 });

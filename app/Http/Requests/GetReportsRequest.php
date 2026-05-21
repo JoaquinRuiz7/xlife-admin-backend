@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Comments;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FetchCommentRequest extends FormRequest
+class GetReportsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,9 @@ class FetchCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['nullable', 'string', 'in:draft,published,taken_down'],
-            'search' => ['nullable', 'string', 'max:255'],
-            'page' => ['nullable', 'integer', 'min:1'],
-            'pageSize' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'status' => ['nullable', 'string', 'in:pending,in_review,resolved,dismissed'],
+            'type' => ['nullable', 'string', 'in:spam,harassment,inappropriate,copyright,misinformation'],
+            'withReportCountForReportedUser' => ['nullable', 'boolean'],
         ];
     }
 }

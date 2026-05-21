@@ -9,7 +9,7 @@ use App\Models\UserActivity;
 
 class UserService
 {
-    public function index(array $filters)
+    public function getUsers(array $filters)
     {
         return User::query()
             ->when($filters['status'] ?? null, fn ($query, string $status) => $query->where('status', $status)
@@ -26,7 +26,7 @@ class UserService
             );
     }
 
-    public function show(int $userId)
+    public function getById(int $userId)
     {
         $user = User::whereId($userId)->first();
 
