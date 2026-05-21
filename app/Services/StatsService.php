@@ -52,7 +52,7 @@ class StatsService
             ->orderByDesc('count')
             ->get();
     }
-    
+
     public function getViralPosts(string $from, string $to)
     {
         return Post::query()
@@ -63,10 +63,22 @@ class StatsService
             ->get();
     }
 
-    public function getUserGrowth(string $range, string $from, string $to)
+    public function getUserGrowth(string $groupBy, string $from, string $to)
     {
+        $format = match ($groupBy) {
+            'day' => '%Y-%m-%d',
+            'week' => '%Y-W%W',
+            'month' => '%Y-%m',
+            'year' => '%Y',
+        };
+
         return User::query()
-            ->whereBetween('created_at', [$from, $to])
-            ->count();
+            ->whereDate('created_at', '>=', $from)
+            ->whereDate('created_at', '<=', $to)
+            ->selectRaw('strftime(?, created_at) as period', [$format])
+            ->selectRaw('COUNT(*) as count')
+            ->groupByRaw('strftime(?, created_at)', [$format])
+            ->orderBy('period')
+            ->get();
     }
 }

@@ -102,7 +102,6 @@ class StatsApiTest extends TestCase
         // (10 * 2) + (1 * 5) + 100
         // 20 + 5 + 100 = 125/10 = 12.5
 
-
         $highScorePost = Post::factory()->create([
             'user_id' => $user->id,
             'views' => 1000,
@@ -128,4 +127,86 @@ class StatsApiTest extends TestCase
         $response->assertJsonPath('1.viral_score', 12.5);
     }
 
+    public function test_get_user_growth_grouped_by_month(): void
+    {
+        $country = Country::factory()->create();
+
+        User::factory()
+            ->count(3)
+            ->create([
+                'country_id' => $country->id,
+                'created_at' => '2026-05-10 10:00:00',
+            ]);
+
+        User::factory()
+            ->count(2)
+            ->create([
+                'country_id' => $country->id,
+                'created_at' => '2026-06-15 10:00:00',
+            ]);
+
+        User::factory()
+            ->count(4)
+            ->create([
+                'country_id' => $country->id,
+                'created_at' => '2026-07-01 10:00:00',
+            ]);
+
+        $response = $this->getJson('/api/stats/user-growth?' . http_build_query([
+                'groupBy' => 'month',
+                'from' => '2026-05-01',
+                'to' => '2026-06-30',
+            ]));
+
+        $response->assertOk();
+
+        $response->assertExactJson([
+            [
+                'period' => '2026-05',
+                'count' => 3,
+            ],
+            [
+                'period' => '2026-06',
+                'count' => 2,
+            ],
+        ]);
+    }
+
+    public function test_get_user_growth_grouped_by_day(): void
+    {
+        $country = Country::factory()->create();
+
+        User::factory()
+            ->count(2)
+            ->create([
+                'country_id' => $country->id,
+                'created_at' => '2026-05-20 10:00:00',
+            ]);
+
+        User::factory()
+            ->count(1)
+            ->create([
+                'country_id' => $country->id,
+                'created_at' => '2026-05-21 10:00:00',
+            ]);
+
+        $response = $this->getJson('/api/stats/user-growth?' . http_build_query([
+                'groupBy' => 'day',
+                'from' => '2026-05-20',
+                'to' => '2026-05-21',
+            ]));
+
+        $response->assertOk();
+
+        $response->assertExactJson([
+            [
+                'period' => '2026-05-20',
+                'count' => 2,
+            ],
+            [
+                'period' => '2026-05-21',
+                'count' => 1,
+            ],
+        ]);
+    }
 }
