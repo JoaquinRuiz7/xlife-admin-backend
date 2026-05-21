@@ -7,14 +7,11 @@ use App\Http\Helper\PaginatedResponse;
 use App\Http\Requests\GetReportsRequest;
 use App\Http\Resources\ReportResource;
 use App\Services\ReportService;
-use HttpResponse;
 use Illuminate\Http\Response;
 
 class ReportController extends Controller
 {
-    public function __construct(private readonly ReportService $reportService)
-    {
-    }
+    public function __construct(private readonly ReportService $reportService) {}
 
     /**
      * @OA\Get(
@@ -28,6 +25,7 @@ class ReportController extends Controller
      *         in="query",
      *         required=false,
      *         description="Filter reports by status",
+     *
      *         @OA\Schema(
      *             type="string",
      *             enum={"pending", "in_review", "resolved", "dismissed"},
@@ -40,6 +38,7 @@ class ReportController extends Controller
      *         in="query",
      *         required=false,
      *         description="Filter reports by type",
+     *
      *         @OA\Schema(
      *             type="string",
      *             enum={"spam", "harassment", "inappropriate", "copyright", "misinformation"},
@@ -52,6 +51,7 @@ class ReportController extends Controller
      *         in="query",
      *         required=false,
      *         description="Whether to include the total number of reports received by the reported user. Use 1 for true, 0 for false.",
+     *
      *         @OA\Schema(
      *             type="integer",
      *             enum={0, 1},
@@ -64,6 +64,7 @@ class ReportController extends Controller
      *         in="query",
      *         required=false,
      *         description="Pagination page number",
+     *
      *         @OA\Schema(type="integer", minimum=1, example=1)
      *     ),
      *
@@ -72,19 +73,24 @@ class ReportController extends Controller
      *         in="query",
      *         required=false,
      *         description="Number of reports per page. Maximum value is 100.",
+     *
      *         @OA\Schema(type="integer", minimum=1, maximum=100, example=25)
      *     ),
      *
      *     @OA\Response(
      *         response=200,
      *         description="Paginated reports",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="data",
      *                 type="array",
+     *
      *                 @OA\Items(
      *                     type="object",
+     *
      *                     @OA\Property(property="id", type="integer", example=1),
      *                     @OA\Property(property="reportedBy", type="string", example="John Doe"),
      *                     @OA\Property(property="reportedUser", type="string", example="Jane Smith"),
@@ -136,10 +142,13 @@ class ReportController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Reports summary grouped by type",
+     *
      *         @OA\JsonContent(
      *             type="array",
+     *
      *             @OA\Items(
      *                 type="object",
+     *
      *                 @OA\Property(property="id", type="integer", example=12),
      *                 @OA\Property(property="label", type="string", example="copyright"),
      *                 @OA\Property(property="count", type="integer", example=107)

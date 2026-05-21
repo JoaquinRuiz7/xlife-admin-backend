@@ -599,6 +599,452 @@
                 }
             }
         },
+        "/api/security/logs": {
+            "get": {
+                "tags": [
+                    "Security"
+                ],
+                "summary": "Get security logs",
+                "description": "Returns a paginated list of security logs. Results can be filtered by severity.",
+                "operationId": "f3a27803ea3db5902d29a7e1005be21c",
+                "parameters": [
+                    {
+                        "name": "severity",
+                        "in": "query",
+                        "description": "Filter security logs by severity",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "info",
+                                "warning",
+                                "high"
+                            ],
+                            "example": "warning"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Pagination page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of security logs per page. Maximum value is 100.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "example": 25
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated security logs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "event": {
+                                                        "type": "string",
+                                                        "example": "Failed login attempt"
+                                                    },
+                                                    "severity": {
+                                                        "type": "string",
+                                                        "example": "warning"
+                                                    },
+                                                    "ipAddress": {
+                                                        "type": "string",
+                                                        "example": "192.168.1.10"
+                                                    },
+                                                    "user": {
+                                                        "type": "string",
+                                                        "example": "John Doe",
+                                                        "nullable": true
+                                                    },
+                                                    "createdAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2026-05-21 14:30:00"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 300
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "pageSize": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "lastPage": {
+                                                    "type": "integer",
+                                                    "example": 12
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/security/blocked-ips": {
+            "get": {
+                "tags": [
+                    "Security"
+                ],
+                "summary": "Get blocked IPs",
+                "description": "Returns a paginated list of blocked IP addresses. Results can be filtered by IP address.",
+                "operationId": "a57e6115e0ae1e0197d30f43451140a0",
+                "parameters": [
+                    {
+                        "name": "ip",
+                        "in": "query",
+                        "description": "Filter blocked IPs by IPv4 address",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "ipv4",
+                            "example": "192.168.1.10"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Pagination page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of blocked IPs per page. Maximum value is 100.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "example": 25
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated blocked IPs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "ip": {
+                                                        "type": "string",
+                                                        "example": "192.168.1.10"
+                                                    },
+                                                    "reason": {
+                                                        "type": "string",
+                                                        "example": "Too many failed login attempts"
+                                                    },
+                                                    "createdAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2026-05-21 14:30:00"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 50
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "pageSize": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "lastPage": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/security/blocked-phones": {
+            "get": {
+                "tags": [
+                    "Security"
+                ],
+                "summary": "Get blocked phone numbers",
+                "description": "Returns a paginated list of blocked phone numbers. Results can be filtered by phone number.",
+                "operationId": "459c87e43caed833fdfb5167ac61be48",
+                "parameters": [
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "description": "Filter blocked phone numbers by phone",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "+59899123456"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Pagination page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of blocked phone numbers per page. Maximum value is 100.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "example": 25
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated blocked phone numbers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "phone": {
+                                                        "type": "string",
+                                                        "example": "+59899123456"
+                                                    },
+                                                    "reason": {
+                                                        "type": "string",
+                                                        "example": "Suspicious activity"
+                                                    },
+                                                    "createdAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2026-05-21 14:30:00"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 80
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "pageSize": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "lastPage": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/security/settings": {
+            "get": {
+                "tags": [
+                    "Security"
+                ],
+                "summary": "Get global security settings",
+                "description": "Returns a paginated list of global security settings.",
+                "operationId": "74c8c830b73bf34b699c11bc02a8745e",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Pagination page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of security settings per page. Maximum value is 100.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "example": 25
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated global security settings",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "key": {
+                                                        "type": "string",
+                                                        "example": "max_login_attempts"
+                                                    },
+                                                    "value": {
+                                                        "type": "string",
+                                                        "example": "5"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Maximum allowed failed login attempts before blocking access"
+                                                    },
+                                                    "createdAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2026-05-21 14:30:00"
+                                                    },
+                                                    "updatedAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2026-05-21 15:00:00"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "pageSize": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "lastPage": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
         "/api/stats/overview": {
             "get": {
                 "tags": [
@@ -820,6 +1266,10 @@
         {
             "name": "Reports",
             "description": "Reports"
+        },
+        {
+            "name": "Security",
+            "description": "Security"
         },
         {
             "name": "Stats",
