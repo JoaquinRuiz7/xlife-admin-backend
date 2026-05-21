@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,17 +13,15 @@ return new class extends Migration
         Schema::create('security_logs', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('ip_address')->nullable();
+            $table->string('ip_address');
             $table->enum('event', [
-                'password_reset_requested',
-                'password_reset_completed',
-                'user_blocked',
-                'two_factor_enabled',
-                'two_factor_disabled',
-                'permission_denied',
+                'failed_login_attempt',
+                'ip_block_automatically',
+                'password_reset_required',
                 'suspicious_activity',
+                'new_device_login',
+                'account_lockout',
             ]);
-            $table->enum('source', ['admin_panel', 'api', 'auth'])->nullable();
             $table->enum('severity', [
                 'info',
                 'warning',

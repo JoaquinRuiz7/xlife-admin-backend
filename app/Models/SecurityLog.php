@@ -11,5 +11,5 @@ class SecurityLog extends Model
 
     protected $table = 'security_logs';
 
-    protected $fillable = ['user_id', 'event', 'severity', 'source', 'ip_address'];
+    protected $fillable = ['user_id', 'event', 'severity', 'ip_address'];
 }

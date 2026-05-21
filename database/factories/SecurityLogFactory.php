@@ -19,16 +19,12 @@ class SecurityLogFactory extends Factory
             'user_id' => User::factory(),
             'ip_address' => $this->faker->ipv4(),
             'event' => fake()->randomElement([
-                'password_reset_requested',
-                'password_reset_completed',
-                'user_blocked',
-                'two_factor_enabled',
-                'two_factor_disabled',
-                'permission_denied',
+                'failed_login_attempt',
+                'ip_block_automatically',
+                'password_reset_required',
                 'suspicious_activity',
-            ]),
-            'source' => fake()->randomElement([
-                'admin_panel', 'api', 'auth',
+                'new_device_login',
+                'account_lockout',
             ]),
             'severity' => fake()->randomElement([
                 'info',

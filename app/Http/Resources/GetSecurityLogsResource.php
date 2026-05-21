@@ -17,7 +17,6 @@ class GetSecurityLogsResource extends JsonResource
         return [
             'id' => $this->id,
             'severity' => $this->severity,
-            'source' => $this->source,
             'ipAddress' => $this->ip_address,
             'userId' => $this->user_id,
             'event' => $this->event,
