@@ -20,7 +20,7 @@ class BlockedIpsTest extends TestCase
         BlockedIp::factory()
             ->count(25)
             ->create([
-                'country_id' => fn() => $countries->random()->id,
+                'country_id' => fn () => $countries->random()->id,
             ]);
 
         $response = $this->getJson('/api/security/blocked-ips');
@@ -50,5 +50,4 @@ class BlockedIpsTest extends TestCase
                 ],
             ]);
     }
-    
 }

@@ -28,7 +28,7 @@ class SecurityLogsTest extends TestCase
         SecurityLog::factory()
             ->count(10)
             ->create([
-                'user_id' => fn() => $users->random()->id,
+                'user_id' => fn () => $users->random()->id,
             ]);
 
         $response = $this->getJson('/api/security/logs');
