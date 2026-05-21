@@ -26,4 +26,9 @@ class StatController extends Controller
     {
         return $this->statsService->getGeographicDistribution();
     }
+
+    public function getViralScoresForPosts()
+    {
+        return $this->statsService->getViralPosts();
+    }
 }

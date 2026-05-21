@@ -25,8 +25,8 @@ class ReportApiTest extends TestCase
         Report::factory()
             ->count(10)
             ->create([
-                'user_id' => fn() => $users->random()->id,
-                'reported_user_id' => fn(array $attributes) => $users
+                'user_id' => fn () => $users->random()->id,
+                'reported_user_id' => fn (array $attributes) => $users
                     ->where('id', '!=', $attributes['user_id'])
                     ->random()
                     ->id,
@@ -53,15 +53,15 @@ class ReportApiTest extends TestCase
         Report::factory()
             ->count(10)
             ->create([
-                'user_id' => fn() => $users->random()->id,
-                'reported_user_id' => fn(array $attributes) => $users
+                'user_id' => fn () => $users->random()->id,
+                'reported_user_id' => fn (array $attributes) => $users
                     ->where('id', '!=', $attributes['user_id'])
                     ->random()
                     ->id,
             ]);
 
         $response = $this->getJson('/api/reports?withReportCountForReportedUser=1');
-        $response->assertJsonPath('data.0.reportedUserTotalReports', fn($value) => !is_null($value));
+        $response->assertJsonPath('data.0.reportedUserTotalReports', fn ($value) => ! is_null($value));
         $response
             ->assertOk()
             ->assertJsonCount(10, 'data')
@@ -97,7 +97,7 @@ class ReportApiTest extends TestCase
             ]);
 
         $response = $this->getJson('/api/reports/summary');
-       
+
         $response
             ->assertOk()
             ->assertJsonFragment([
