@@ -19,6 +19,7 @@ class PostCommentResource extends JsonResource
             'commentedBy' => $this->user->name,
             'comment' => $this->comment,
             'post' => $this->post->id,
+            'status' => $this->status
         ];
     }
 }

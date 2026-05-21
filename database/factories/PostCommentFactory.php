@@ -22,6 +22,7 @@ class PostCommentFactory extends Factory
             'post_id' => fake()->randomElement(Post::pluck('id')->toArray()),
             'user_id' => fake()->randomElement(User::pluck('id')->toArray()),
             'comment' => $this->faker->text(),
+            'status' => $this->faker->randomElement(['draft', 'published', 'taken_down']),
         ];
     }
 }

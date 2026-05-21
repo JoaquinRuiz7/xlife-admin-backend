@@ -12,7 +12,7 @@ class PostComment extends Model
 
     protected $table = 'post_comments';
 
-    protected $fillable = ['post_id', 'user_id', 'content'];
+    protected $fillable = ['post_id', 'user_id', 'content', 'status'];
 
     public function user(): BelongsTo
     {

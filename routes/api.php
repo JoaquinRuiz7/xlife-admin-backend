@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -30,4 +31,8 @@ Route::group(['prefix' => '/users'], function () {
 Route::group(['prefix' => '/posts'], function () {
     Route::get('', [PostController::class, 'getPosts']);
     Route::get('/{postId}/comments', [PostController::class, 'getPostComments']);
+});
+
+Route::group(['prefix' => '/comments'], function () {
+    Route::get('', [CommentController::class, 'getComments']);
 });

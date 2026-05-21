@@ -59,6 +59,14 @@ class PostApiTest extends TestCase
             ->assertJsonValidationErrors(['pageSize']);
     }
 
+    public function test_post_not_found(): void
+    {
+        $response = $this->getJson('/api/posts/100000000/comments');
+        $response
+            ->assertStatus(404)
+            ->assertJson(['message' => 'Post not found.']);
+    }
+
     public function test_get_post_comments(): void
     {
         $country = Country::factory()->create();
