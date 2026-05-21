@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,4 +25,9 @@ Route::group(['prefix' => '/users'], function () {
     Route::get('/{userId}', [UserController::class, 'show']);
     Route::get('/{userId}/posts', [UserController::class, 'getUserPosts']);
     Route::get('/{userId}/activity', [UserController::class, 'getUserActivity']);
+});
+
+Route::group(['prefix' => '/posts'], function () {
+    Route::get('', [PostController::class, 'getPosts']);
+    // Route::get('/{userId}', [UserController::class, 'show']);
 });

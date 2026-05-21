@@ -8,14 +8,12 @@ use App\Http\Requests\Users\GetUserPostsRequest;
 use App\Http\Requests\Users\IndexUsersRequest;
 use App\Http\Resources\UserPostResource;
 use App\Http\Resources\UserResource;
-use App\Services\User\UserService;
+use App\Services\UserService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class UserController extends Controller
 {
-    public function __construct(private readonly UserService $userService)
-    {
-    }
+    public function __construct(private readonly UserService $userService) {}
 
     public function index(IndexUsersRequest $indexUsersRequest)
     {

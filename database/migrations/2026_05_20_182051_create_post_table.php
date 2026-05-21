@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('content');
+            $table->enum('status', ['draft', 'published', 'taken_down'])->default('draft');
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')

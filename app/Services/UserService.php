@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User;
+namespace App\Services;
 
 use App\Exceptions\UserNotFoundException;
 use App\Models\Post;
@@ -12,7 +12,7 @@ class UserService
     public function index(array $filters)
     {
         return User::query()
-            ->when($filters['status'] ?? null, fn($query, string $status) => $query->where('status', $status)
+            ->when($filters['status'] ?? null, fn ($query, string $status) => $query->where('status', $status)
             )
             ->when($filters['search'] ?? null, function ($query, string $search) {
                 $query->where(function ($query) use ($search) {
@@ -30,7 +30,7 @@ class UserService
     {
         $user = User::whereId($userId)->first();
 
-        if (!$user) {
+        if (! $user) {
             throw new UserNotFoundException;
         }
 

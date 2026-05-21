@@ -18,7 +18,7 @@ class UserActivitySeeder extends Seeder
         UserActivity::factory()
             ->count(1000)
             ->create([
-                'user_id' => fn() => $userIds->random(),
+                'user_id' => fn () => $userIds->random(),
             ]);
     }
 }
