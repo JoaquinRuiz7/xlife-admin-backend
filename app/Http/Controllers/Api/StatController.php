@@ -65,7 +65,7 @@ class StatController extends Controller
      */
     public function getGeographicDistribution()
     {
-        return $this->statsService->getGeographicDistribution();
+        return response($this->statsService->getGeographicDistribution(), Response::HTTP_OK);
     }
 
     /**
@@ -117,7 +117,7 @@ class StatController extends Controller
     {
         $rangeDates = $rangedRequest->validated();
 
-        return $this->statsService->getViralPosts($rangeDates['from'], $rangeDates['to']);
+        return response($this->statsService->getViralPosts($rangeDates['from'], $rangeDates['to']), Response::HTTP_OK);
     }
 
     /**
