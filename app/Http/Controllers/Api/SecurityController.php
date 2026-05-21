@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Http\Helper\PaginatedResponse;
+use App\Http\Requests\GetSecurityLogsRequest;
+use App\Http\Resources\GetSecurityLogsResource;
+use App\Services\SecurityService;
+
+class SecurityController extends Controller
+{
+    public function __construct(private readonly SecurityService $securityService) {}
+
+    public function getSecurityLogs(GetSecurityLogsRequest $getSecurityLogsRequest)
+    {
+        $filters = $getSecurityLogsRequest->validated();
+
+        return PaginatedResponse::make($this->securityService->getSecurityLogs($filters), GetSecurityLogsResource::class);
+    }
+}

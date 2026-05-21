@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UserActivitySeeder::class,
             PostCommentsSeeder::class,
             ReportSeeder::class,
+            SecurityLogSeeder::class,
         ]);
     }
 }
