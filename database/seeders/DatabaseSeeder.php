@@ -19,6 +19,10 @@ class DatabaseSeeder extends Seeder
             UserActivitySeeder::class,
             PostCommentsSeeder::class,
             ReportSeeder::class,
+            SecurityLogSeeder::class,
+            BlockedIpSeeder::class,
+            BlockedPhoneSeeder::class,
+            GlobalSecuritySettingSeeder::class,
         ]);
     }
 }

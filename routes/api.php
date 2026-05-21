@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\SecurityController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,4 +42,11 @@ Route::group(['prefix' => '/comments'], function () {
 Route::group(['prefix' => '/reports'], function () {
     Route::get('', [ReportController::class, 'getReports']);
     Route::get('/summary', [ReportController::class, 'getReportsSummary']);
+});
+
+Route::group(['prefix' => '/security'], function () {
+    Route::get('/logs', [SecurityController::class, 'getSecurityLogs']);
+    Route::get('/blocked-ips', [SecurityController::class, 'getBlockedIps']);
+    Route::get('/blocked-phones', [SecurityController::class, 'getBlockedPhones']);
+    Route::get('/settings', [SecurityController::class, 'getSecuritySettings']);
 });
