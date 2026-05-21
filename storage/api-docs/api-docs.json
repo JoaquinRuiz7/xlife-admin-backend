@@ -12,6 +12,122 @@
         }
     ],
     "paths": {
+        "/api/comments": {
+            "get": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Get post comments",
+                "description": "Returns a paginated list of post comments. Results can be filtered by comment status.",
+                "operationId": "aa239f69b4c682985441ea2c62960ae1",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter comments by status",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "draft",
+                                "published",
+                                "taken_down"
+                            ],
+                            "example": "published"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Pagination page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of comments per page. Maximum value is 100.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "example": 25
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated comments",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "commentedBy": {
+                                                        "type": "string",
+                                                        "example": "Dr. Magdalen Walsh"
+                                                    },
+                                                    "comment": {
+                                                        "type": "string",
+                                                        "example": "This is a post comment."
+                                                    },
+                                                    "post": {
+                                                        "type": "integer",
+                                                        "example": 27
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "published"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 1000
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "pageSize": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "lastPage": {
+                                                    "type": "integer",
+                                                    "example": 40
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
         "/api/stats/overview": {
             "get": {
                 "tags": [
@@ -222,6 +338,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Comments",
+            "description": "Comments"
+        },
         {
             "name": "Stats",
             "description": "Stats"

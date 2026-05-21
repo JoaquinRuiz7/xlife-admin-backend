@@ -23,7 +23,6 @@ class GetCommentRequest extends FormRequest
     {
         return [
             'status' => ['nullable', 'string', 'in:draft,published,taken_down'],
-            'type' => ['spam', 'harassment', 'inappropriate', 'copyright', 'misinformation'],
             'page' => ['nullable', 'integer', 'min:1'],
             'pageSize' => ['nullable', 'integer', 'min:1', 'max:100'],
         ];
