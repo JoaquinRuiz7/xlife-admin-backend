@@ -10,7 +10,9 @@ class PostService
     public function getPosts(array $filters)
     {
         return Post::query()
-            ->when($filters['status'] ?? null, fn ($query, string $status) => $query->where('status', $status)
+            ->when(
+                $filters['status'] ?? null,
+                fn ($query, string $status) => $query->where('status', $status)
             )
             ->when($filters['search'] ?? null, function ($query, string $search) {
                 $query->where(function ($query) use ($search) {

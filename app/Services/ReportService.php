@@ -9,7 +9,9 @@ class ReportService
     public function getReports(array $filters)
     {
         return Report::query()
-            ->when($filters['status'] ?? null, fn ($query, string $status) => $query->where('status', $status)
+            ->when(
+                $filters['status'] ?? null,
+                fn ($query, string $status) => $query->where('status', $status)
             )
             ->when($filters['type'] ?? null, fn ($query, string $type) => $query->where('type', $type))
             ->when(

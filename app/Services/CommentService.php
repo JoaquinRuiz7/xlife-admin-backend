@@ -9,7 +9,9 @@ class CommentService
     public function getComments(array $filters)
     {
         return PostComment::query()
-            ->when($filters['status'] ?? null, fn ($query, string $status) => $query->where('status', $status)
+            ->when(
+                $filters['status'] ?? null,
+                fn ($query, string $status) => $query->where('status', $status)
             )
             ->when($filters['search'] ?? null, function ($query, string $search) {
                 $query->where(function ($query) use ($search) {
