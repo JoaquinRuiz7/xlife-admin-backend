@@ -23,7 +23,8 @@ class GetReportsRequest extends FormRequest
     {
         return [
             'status' => ['nullable', 'string', 'in:draft,published,taken_down'],
-            'type' => ['nullable', 'string', 'in:'],
+            'type' => ['nullable', 'string', 'in:spam,harassment,inappropriate,copyright,misinformation'],
+            'withReportCountForReportedUser' => ['nullable', 'boolean'],
         ];
     }
 }

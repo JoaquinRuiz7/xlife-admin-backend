@@ -22,6 +22,7 @@ class ReportResource extends JsonResource
             'reported' => $this->reportedUser->name,
             'priority' => $this->priority,
             'moderatorNotes' => $this->moderator_notes,
+            'reportedUserTotalReports' => $this->reportedUser?->report_count,
         ];
     }
 }
