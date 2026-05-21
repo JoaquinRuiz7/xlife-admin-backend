@@ -22,7 +22,7 @@ class GetReportsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['nullable', 'string', 'in:draft,published,taken_down'],
+            'status' => ['nullable', 'string', 'in:pending,in_review,resolved,dismissed'],
             'type' => ['nullable', 'string', 'in:spam,harassment,inappropriate,copyright,misinformation'],
             'withReportCountForReportedUser' => ['nullable', 'boolean'],
         ];
