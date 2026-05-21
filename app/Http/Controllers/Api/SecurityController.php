@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Helper\PaginatedResponse;
 use App\Http\Requests\GetBlockedIpsRequest;
 use App\Http\Requests\GetBlockedPhonesRequest;
+use App\Http\Requests\GetGlobalSecuritySettingsRequest;
 use App\Http\Requests\GetSecurityLogsRequest;
 use App\Http\Resources\BlockedPhoneResource;
 use App\Http\Resources\BlockerIpResource;
 use App\Http\Resources\GetSecurityLogsResource;
+use App\Http\Resources\GlobalSecuritySettingResource;
 use App\Services\SecurityService;
 
 class SecurityController extends Controller
@@ -36,5 +38,12 @@ class SecurityController extends Controller
 
         return PaginatedResponse::make($this->securityService->getBlockedPhoneNumbers($filters), BlockedPhoneResource::class);
 
+    }
+
+    public function getSecuritySettings(GetGlobalSecuritySettingsRequest $getGlobalSecuritySettingsRequest)
+    {
+        $paginationOptions = $getGlobalSecuritySettingsRequest->validated();
+
+        return PaginatedResponse::make($this->securityService->getSecuritySettings($paginationOptions), GlobalSecuritySettingResource::class);
     }
 }

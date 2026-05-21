@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             ReportSeeder::class,
             SecurityLogSeeder::class,
             BlockedIpSeeder::class,
-            BlockedPhoneSeeder::class
+            BlockedPhoneSeeder::class,
+            GlobalSecuritySettingSeeder::class,
         ]);
     }
 }

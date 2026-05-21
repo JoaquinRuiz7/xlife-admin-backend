@@ -15,7 +15,7 @@ class BlockedPhoneSeeder extends Seeder
         BlockedPhone::factory()
             ->count(15)
             ->create([
-                'user_id' => fn() => $users->random()->id,
+                'user_id' => fn () => $users->random()->id,
             ]);
     }
 }

@@ -25,7 +25,7 @@ class BlockedPhoneTest extends TestCase
         BlockedPhone::factory()
             ->count(10)
             ->create([
-                'user_id' => fn() => $users->random()->id,
+                'user_id' => fn () => $users->random()->id,
             ]);
 
         $response = $this->getJson('/api/security/blocked-phones');
@@ -76,5 +76,4 @@ class BlockedPhoneTest extends TestCase
             ->assertJsonPath('meta.total', 1)
             ->assertJsonPath('data.0.phoneNumber', '+59899123456');
     }
-
 }
