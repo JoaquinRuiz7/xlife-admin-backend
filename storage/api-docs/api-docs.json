@@ -403,6 +403,202 @@
                 }
             }
         },
+        "/api/reports": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Get reports",
+                "description": "Returns a paginated list of reports. Results can be filtered by status, type, and optionally include the report count for the reported user.",
+                "operationId": "228a42eb93ed65302bba77a09b9f6000",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter reports by status",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "in_review",
+                                "resolved",
+                                "dismissed"
+                            ],
+                            "example": "pending"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Filter reports by type",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "spam",
+                                "harassment",
+                                "inappropriate",
+                                "copyright",
+                                "misinformation"
+                            ],
+                            "example": "spam"
+                        }
+                    },
+                    {
+                        "name": "withReportCountForReportedUser",
+                        "in": "query",
+                        "description": "Whether to include the total number of reports received by the reported user. Use 1 for true, 0 for false.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ],
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Pagination page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of reports per page. Maximum value is 100.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "example": 25
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated reports",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "reportedBy": {
+                                                        "type": "string",
+                                                        "example": "John Doe"
+                                                    },
+                                                    "reportedUser": {
+                                                        "type": "string",
+                                                        "example": "Jane Smith"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "example": "spam"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "pending"
+                                                    },
+                                                    "reason": {
+                                                        "type": "string",
+                                                        "example": "Repeated spam content"
+                                                    },
+                                                    "reportedUserReportsCount": {
+                                                        "type": "integer",
+                                                        "example": 5,
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 250
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "pageSize": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "lastPage": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/reports/summary": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Get reports summary",
+                "description": "Returns the total number of reports grouped by report type.",
+                "operationId": "a22605238a437dd5de4d754bade20c85",
+                "responses": {
+                    "200": {
+                        "description": "Reports summary grouped by type",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 12
+                                            },
+                                            "label": {
+                                                "type": "string",
+                                                "example": "copyright"
+                                            },
+                                            "count": {
+                                                "type": "integer",
+                                                "example": 107
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/stats/overview": {
             "get": {
                 "tags": [
@@ -620,6 +816,10 @@
         {
             "name": "Posts",
             "description": "Posts"
+        },
+        {
+            "name": "Reports",
+            "description": "Reports"
         },
         {
             "name": "Stats",
