@@ -92,10 +92,11 @@ class UsersApiTest extends TestCase
 
     public function test_get_user_by_id(): void
     {
+        $country = Country::factory()->create();
         $user = User::factory()->create([
             'name' => 'John Doe',
             'email' => 'john@example.com',
-            'country_id' => Country::factory()->create()->id,
+            'country_id' => $country->id,
         ]);
 
         $response = $this->getJson("/api/users/$user->id");

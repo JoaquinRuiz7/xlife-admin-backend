@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->integer('post_id');
             $table->text('comment');
+            $table->enum('status', ['draft', 'published', 'taken_down'])->default('draft');
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
