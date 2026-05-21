@@ -2,6 +2,7 @@
 
 namespace Feature\Api;
 
+use App\Enums\ReportStatus;
 use App\Models\Country;
 use App\Models\Report;
 use App\Models\User;
@@ -27,7 +28,7 @@ class StatsApiTest extends TestCase
         Report::factory()
             ->count(10)
             ->create([
-                'status' => 'pending',
+                'status' => ReportStatus::PENDING,
                 'user_id' => fn() => $users->random()->id,
                 'reported_user_id' => fn(array $attributes) => $users
                     ->where('id', '!=', $attributes['user_id'])
