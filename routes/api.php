@@ -46,5 +46,5 @@ Route::group(['prefix' => '/reports'], function () {
 
 Route::group(['prefix' => '/security'], function () {
     Route::get('/logs', [SecurityController::class, 'getSecurityLogs']);
-    // Route::get('/summary', [ReportController::class, 'getReportsSummary']);
+    Route::get('/blocked-ips', [SecurityController::class, 'getBlockedIps']);
 });

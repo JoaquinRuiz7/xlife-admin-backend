@@ -14,9 +14,8 @@ class UserActivitySeeder extends Seeder
     public function run(): void
     {
         $userIds = User::query()->pluck('id');
-
         UserActivity::factory()
-            ->count(1000)
+            ->count(200)
             ->create([
                 'user_id' => fn () => $userIds->random(),
             ]);

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\BlockedIp;
 use App\Models\SecurityLog;
 
 class SecurityService
@@ -11,6 +12,16 @@ class SecurityService
         return SecurityLog::query()
             ->when($filters['severity'] ?? null, fn ($query, string $severity) => $query->where('severity', $severity)
             )
+            ->paginate(
+                perPage: $filters['pageSize'] ?? 25,
+                page: $filters['page'] ?? 1
+            );
+    }
+
+    public function getBlockedIps(array $filters)
+    {
+        return BlockedIp::query()
+            ->when($filters['ip'] ?? null, fn ($query, string $ip) => $query->where('ip_address', $ip))
             ->paginate(
                 perPage: $filters['pageSize'] ?? 25,
                 page: $filters['page'] ?? 1

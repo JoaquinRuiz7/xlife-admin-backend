@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             PostCommentsSeeder::class,
             ReportSeeder::class,
             SecurityLogSeeder::class,
+            BlockedIpSeeder::class,
         ]);
     }
 }
