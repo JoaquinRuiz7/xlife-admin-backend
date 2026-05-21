@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Report;
+use Illuminate\Support\Facades\DB;
 
 class ReportService
 {
@@ -21,5 +22,14 @@ class ReportService
                 perPage: $filters['pageSize'] ?? 25,
                 page: $filters['page'] ?? 1
             );
+    }
+
+    public function getReportsSummary()
+    {
+        return DB::select('
+        select id, "type" as label, count(id) as count
+        from reports
+        group by ("type");
+    ');
     }
 }

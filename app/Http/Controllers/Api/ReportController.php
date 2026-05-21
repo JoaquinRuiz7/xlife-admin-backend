@@ -18,4 +18,9 @@ class ReportController extends Controller
 
         return PaginatedResponse::make($this->reportService->getReports($filters), ReportResource::class);
     }
+
+    public function getReportsSummary()
+    {
+        return $this->reportService->getReportsSummary();
+    }
 }

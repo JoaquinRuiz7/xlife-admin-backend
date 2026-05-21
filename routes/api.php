@@ -40,4 +40,5 @@ Route::group(['prefix' => '/comments'], function () {
 
 Route::group(['prefix' => '/reports'], function () {
     Route::get('', [ReportController::class, 'getReports']);
+    Route::get('/summary', [ReportController::class, 'getReportsSummary']);
 });

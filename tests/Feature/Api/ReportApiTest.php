@@ -67,4 +67,9 @@ class ReportApiTest extends TestCase
             ->assertJsonCount(10, 'data')
             ->assertJsonPath('meta.total', 10);
     }
+
+    public function test_get_report_summary()
+    {
+
+    }
 }
