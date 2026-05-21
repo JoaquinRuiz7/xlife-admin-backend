@@ -12,7 +12,9 @@ class SecurityService
     public function getSecurityLogs(array $filters)
     {
         return SecurityLog::query()
-            ->when($filters['severity'] ?? null, fn ($query, string $severity) => $query->where('severity', $severity)
+            ->when(
+                $filters['severity'] ?? null,
+                fn ($query, string $severity) => $query->where('severity', $severity)
             )
             ->paginate(
                 perPage: $filters['pageSize'] ?? 25,
@@ -45,6 +47,7 @@ class SecurityService
         return GlobalSecuritySetting::query()
             ->paginate(
                 perPage: $filters['pageSize'] ?? 25,
-                page: $filters['page'] ?? 1);
+                page: $filters['page'] ?? 1
+            );
     }
 }
