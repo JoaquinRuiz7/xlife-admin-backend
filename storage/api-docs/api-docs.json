@@ -128,6 +128,281 @@
                 }
             }
         },
+        "/api/posts": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Get posts",
+                "description": "Returns a paginated list of posts. Results can be filtered by status and searched by text.",
+                "operationId": "2468fa7d3155623f78ed1eaa51e65909",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter posts by status",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "draft",
+                                "published",
+                                "taken_down"
+                            ],
+                            "example": "published"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search posts by text",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255,
+                            "example": "test comment"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Pagination page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of posts per page. Maximum value is 100.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "example": 25
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated posts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "user": {
+                                                        "type": "string",
+                                                        "example": "John Doe"
+                                                    },
+                                                    "content": {
+                                                        "type": "string",
+                                                        "example": "This is a post content."
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "published"
+                                                    },
+                                                    "views": {
+                                                        "type": "integer",
+                                                        "example": 1200
+                                                    },
+                                                    "likes": {
+                                                        "type": "integer",
+                                                        "example": 300
+                                                    },
+                                                    "shares": {
+                                                        "type": "integer",
+                                                        "example": 45
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 500
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "pageSize": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "lastPage": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/posts/{postId}/comments": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Get post comments",
+                "description": "Returns a paginated list of comments for a specific post.",
+                "operationId": "94b95550a22f799c62697dee1c62ca14",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "Post ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter comments by status",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "draft",
+                                "published",
+                                "taken_down"
+                            ],
+                            "example": "published"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search comments by text",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255,
+                            "example": "important comment"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Pagination page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of comments per page. Maximum value is 100.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "example": 25
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated post comments",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "commentedBy": {
+                                                        "type": "string",
+                                                        "example": "John Doe"
+                                                    },
+                                                    "comment": {
+                                                        "type": "string",
+                                                        "example": "This is a post comment."
+                                                    },
+                                                    "post": {
+                                                        "type": "integer",
+                                                        "example": 27
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "published"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "pageSize": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "lastPage": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Post not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
         "/api/stats/overview": {
             "get": {
                 "tags": [
@@ -341,6 +616,10 @@
         {
             "name": "Comments",
             "description": "Comments"
+        },
+        {
+            "name": "Posts",
+            "description": "Posts"
         },
         {
             "name": "Stats",

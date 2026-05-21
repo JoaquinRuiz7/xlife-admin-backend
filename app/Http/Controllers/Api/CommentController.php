@@ -10,9 +10,7 @@ use App\Services\CommentService;
 
 class CommentController extends Controller
 {
-    public function __construct(private readonly CommentService $commentService)
-    {
-    }
+    public function __construct(private readonly CommentService $commentService) {}
 
     /**
      * @OA\Get(

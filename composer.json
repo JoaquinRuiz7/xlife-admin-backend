@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.1",
@@ -51,7 +54,8 @@
             "@php artisan key:generate --ansi"
         ],
         "dev": "php artisan serve",
-        "format": "./vendor/bin/pint"
+        "format": "./vendor/bin/pint",
+        "doc": "php artisan l5-swagger:generate"
     },
     "extra": {
         "laravel": {
