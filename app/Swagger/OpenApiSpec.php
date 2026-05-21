@@ -8,6 +8,7 @@ namespace App\Swagger;
  *     version="1.0.0",
  *     description="API Description"
  * )
+ *
  * @OA\Server(
  *     url="http://localhost:8000",
  *     description="Development Server"

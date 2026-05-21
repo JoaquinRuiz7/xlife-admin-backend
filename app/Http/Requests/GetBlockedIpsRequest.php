@@ -23,6 +23,8 @@ class GetBlockedIpsRequest extends FormRequest
     {
         return [
             'ip' => ['nullable', 'string', 'ipv4'],
+            'page' => ['nullable', 'integer', 'min:1'],
+            'pageSize' => ['nullable', 'integer', 'min:1', 'max:100'],
         ];
     }
 }
