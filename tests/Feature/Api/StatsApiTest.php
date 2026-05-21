@@ -29,8 +29,8 @@ class StatsApiTest extends TestCase
             ->count(10)
             ->create([
                 'status' => ReportStatus::PENDING,
-                'user_id' => fn () => $users->random()->id,
-                'reported_user_id' => fn (array $attributes) => $users
+                'user_id' => fn() => $users->random()->id,
+                'reported_user_id' => fn(array $attributes) => $users
                     ->where('id', '!=', $attributes['user_id'])
                     ->random()
                     ->id,
@@ -111,20 +111,20 @@ class StatsApiTest extends TestCase
         ]);
         // (100 * 2) + (20 * 5) + 1000
         // 200 + 100 + 1000 = 1300 / 10 = 130
-        $yesterday = now()->subDays(2)->toDateString();
+        $yesterday = now()->subDays(3)->toDateString();
         $now = now()->toDateString();
 
-        $response = $this->get('/api/stats/viral-posts?'.http_build_query([
-            'from' => $yesterday,
-            'to' => $now,
-        ]));
+        $response = $this->get('/api/stats/viral-posts?' . http_build_query([
+                'from' => $yesterday,
+                'to' => $now,
+            ]));
         $response->assertOk();
 
         $response->assertJsonPath('0.id', $highScorePost->id);
         $response->assertJsonPath('1.id', $lowScorePost->id);
 
-        $response->assertJsonPath('0.viral_score', 130);
-        $response->assertJsonPath('1.viral_score', 12.5);
+        $response->assertJsonPath('0.viralScore', 130);
+        $response->assertJsonPath('1.viralScore', 12.5);
     }
 
     public function test_get_user_growth_grouped_by_month(): void
@@ -152,11 +152,11 @@ class StatsApiTest extends TestCase
                 'created_at' => '2026-07-01 10:00:00',
             ]);
 
-        $response = $this->getJson('/api/stats/user-growth?'.http_build_query([
-            'groupBy' => 'month',
-            'from' => '2026-05-01',
-            'to' => '2026-06-30',
-        ]));
+        $response = $this->getJson('/api/stats/user-growth?' . http_build_query([
+                'groupBy' => 'month',
+                'from' => '2026-05-01',
+                'to' => '2026-06-30',
+            ]));
 
         $response->assertOk();
 
@@ -190,11 +190,11 @@ class StatsApiTest extends TestCase
                 'created_at' => '2026-05-21 10:00:00',
             ]);
 
-        $response = $this->getJson('/api/stats/user-growth?'.http_build_query([
-            'groupBy' => 'day',
-            'from' => '2026-05-20',
-            'to' => '2026-05-21',
-        ]));
+        $response = $this->getJson('/api/stats/user-growth?' . http_build_query([
+                'groupBy' => 'day',
+                'from' => '2026-05-20',
+                'to' => '2026-05-21',
+            ]));
 
         $response->assertOk();
 

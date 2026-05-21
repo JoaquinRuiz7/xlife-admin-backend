@@ -40,11 +40,65 @@ class StatController extends Controller
         ], Response::HTTP_OK);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/stats/geographic-distribution",
+     *     summary="Get user geographical distribution grouped by country",
+     *     tags={"Stats"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Geographical distribution grouped by country.",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="country", type="string", example="Italy"),
+     *                 @OA\Property(property="count", type="integer", example=223)
+     *             )
+     *         )
+     *     ),
+     * )
+     */
     public function getGeographicDistribution()
     {
         return $this->statsService->getGeographicDistribution();
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/stats/viral-posts",
+     *     summary="Get user growth grouped by period",
+     *     tags={"Stats"},
+     *     @OA\Parameter(
+     *         name="from",
+     *         in="query",
+     *         required=true,
+     *         description="Start date",
+     *         @OA\Schema(type="string", format="date", example="2026-05-01")
+     *     ),
+     *     @OA\Parameter(
+     *         name="to",
+     *         in="query",
+     *         required=true,
+     *         description="End date",
+     *         @OA\Schema(type="string", format="date", example="2026-05-31")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Viral posts for a given date range.",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="id", type="integer", example="1"),
+     *                 @OA\Property(property="viralScore", type="double", example=1251.8)
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error"
+     *     )
+     * )
+     */
     public function getViralScoresForPosts(RangedRequest $rangedRequest)
     {
         $rangeDates = $rangedRequest->validated();

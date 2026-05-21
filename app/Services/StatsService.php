@@ -58,8 +58,8 @@ class StatsService
         return Post::query()
             ->whereBetween('created_at', [$from, $to])
             ->select('id')
-            ->selectRaw('((likes * 2) + (shares * 5) + views) / 10.0 as viral_score')
-            ->orderBy('viral_score', 'desc')
+            ->selectRaw('((likes * 2) + (shares * 5) + views) / 10.0 as viralScore')
+            ->orderBy('viralScore', 'desc')
             ->get();
     }
 

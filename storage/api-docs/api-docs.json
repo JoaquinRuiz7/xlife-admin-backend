@@ -47,6 +47,102 @@
                 }
             }
         },
+        "/api/stats/geographic-distribution": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get user geographical distribution grouped by country",
+                "operationId": "3bfd2fa8e4b101bc86d2cff187518d10",
+                "responses": {
+                    "200": {
+                        "description": "Geographical distribution grouped by country.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "country": {
+                                                "type": "string",
+                                                "example": "Italy"
+                                            },
+                                            "count": {
+                                                "type": "integer",
+                                                "example": 223
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/stats/viral-posts": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get user growth grouped by period",
+                "operationId": "bc8cad323957ceee9c86b1810f3f5e33",
+                "parameters": [
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "Start date",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-05-01"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "End date",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-05-31"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Viral posts for a given date range.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": "1"
+                                            },
+                                            "viralScore": {
+                                                "type": "number",
+                                                "format": "double",
+                                                "example": 1251.8
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
         "/api/stats/user-growth": {
             "get": {
                 "tags": [
