@@ -16,6 +16,9 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('content');
             $table->enum('status', ['draft', 'published', 'taken_down'])->default('draft');
+            $table->unsignedInteger('views')->default(0);
+            $table->unsignedInteger('likes')->default(0);
+            $table->unsignedInteger('shares')->default(0);
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')

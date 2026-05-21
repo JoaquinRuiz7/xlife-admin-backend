@@ -39,6 +39,11 @@ class UserService
 
     public function getUserPosts(int $userId, array $paginationOptions)
     {
+        $userExists = User::whereId($userId)->exists();
+        if (! $userExists) {
+            throw new UserNotFoundException;
+        }
+
         return Post::query()
             ->where([
                 'user_id' => $userId,
@@ -51,7 +56,7 @@ class UserService
 
     public function getUserActivity(int $userId)
     {
-        $user = User::whereId($userId)->first();
+        $user = User::whereId($userId)->exists();
         if (! $user) {
             throw new UserNotFoundException;
         }

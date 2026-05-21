@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Report;
-use Illuminate\Support\Facades\DB;
 
 class ReportService
 {
@@ -26,10 +25,10 @@ class ReportService
 
     public function getReportsSummary()
     {
-        return DB::select('
-        select id, "type" as label, count(id) as count
-        from reports
-        group by ("type");
-    ');
+        return Report::query()
+            ->select(['id', 'type as label'])
+            ->selectRaw('COUNT(id) as count')
+            ->groupBy('type')
+            ->get();
     }
 }

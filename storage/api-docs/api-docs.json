@@ -1,0 +1,134 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Your API Title",
+        "description": "API Description",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Development Server"
+        }
+    ],
+    "paths": {
+        "/api/stats/overview": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get overview statistics",
+                "operationId": "a084da48d55b0fce59cbf3db16911e31",
+                "responses": {
+                    "200": {
+                        "description": "Overview statistics",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "totalUsers": {
+                                            "type": "integer",
+                                            "example": 1200
+                                        },
+                                        "activeUsers": {
+                                            "type": "integer",
+                                            "example": 950
+                                        },
+                                        "pendingReports": {
+                                            "type": "integer",
+                                            "example": 35
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/stats/user-growth": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get user growth grouped by period",
+                "operationId": "aa4278438a580776c71081a1799132e6",
+                "parameters": [
+                    {
+                        "name": "groupBy",
+                        "in": "query",
+                        "description": "Grouping period",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "day",
+                                "week",
+                                "month",
+                                "year"
+                            ],
+                            "example": "month"
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "Start date",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-05-01"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "End date",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-05-31"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User growth data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "period": {
+                                                "type": "string",
+                                                "example": "2026-05"
+                                            },
+                                            "count": {
+                                                "type": "integer",
+                                                "example": 1200
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Stats",
+            "description": "Stats"
+        }
+    ]
+}

@@ -22,6 +22,9 @@ class PostFactory extends Factory
             'content' => fake()->paragraph(),
             'status' => fake()->randomElement(['draft', 'published', 'taken_down']),
             'created_at' => fake()->dateTimeBetween('-1 year', 'now'),
+            'views' => fake()->numberBetween(0, 10000),
+            'likes' => fake()->numberBetween(0, 1000),
+            'shares' => fake()->numberBetween(0, 300),
         ];
     }
 }
