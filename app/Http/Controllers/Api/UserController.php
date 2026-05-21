@@ -9,11 +9,13 @@ use App\Http\Requests\Users\GetUsersRequest;
 use App\Http\Resources\UserPostResource;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
-    public function __construct(private readonly UserService $userService) {}
+    public function __construct(private readonly UserService $userService)
+    {
+    }
 
     public function getUsers(GetUsersRequest $indexUsersRequest)
     {
@@ -24,7 +26,7 @@ class UserController extends Controller
 
     public function getById(int $userId)
     {
-        return response(UserResource::make($this->userService->getById($userId)), ResponseAlias::HTTP_OK);
+        return response(UserResource::make($this->userService->getById($userId)), Response::HTTP_OK);
     }
 
     public function getUserPosts(int $userId, GetUserPostsRequest $getUserPostsRequest)
@@ -34,6 +36,6 @@ class UserController extends Controller
 
     public function getUserActivity(int $userId)
     {
-        return response($this->userService->getUserActivity($userId), ResponseAlias::HTTP_OK);
+        return response($this->userService->getUserActivity($userId), Response::HTTP_OK);
     }
 }
