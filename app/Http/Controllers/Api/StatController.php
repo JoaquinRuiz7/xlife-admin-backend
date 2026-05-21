@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RangedRequest;
 use App\Services\StatsService;
 use Illuminate\Http\Response;
 
@@ -27,8 +28,9 @@ class StatController extends Controller
         return $this->statsService->getGeographicDistribution();
     }
 
-    public function getViralScoresForPosts()
+    public function getViralScoresForPosts(RangedRequest $rangedRequest)
     {
-        return $this->statsService->getViralPosts();
+        $rangeDates = $rangedRequest->validated();
+        return $this->statsService->getViralPosts($rangeDates['from'], $rangeDates['to']);
     }
 }

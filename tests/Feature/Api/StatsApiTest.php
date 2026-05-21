@@ -97,6 +97,7 @@ class StatsApiTest extends TestCase
             'views' => 100,
             'likes' => 10,
             'shares' => 1,
+            'created_at' => now()->subDay(),
         ]);
         // (10 * 2) + (1 * 5) + 100
         // 20 + 5 + 100 = 125/10 = 12.5
@@ -107,11 +108,17 @@ class StatsApiTest extends TestCase
             'views' => 1000,
             'likes' => 100,
             'shares' => 20,
+            'created_at' => now()->subDay(),
         ]);
         // (100 * 2) + (20 * 5) + 1000
         // 200 + 100 + 1000 = 1300 / 10 = 130
-        $response = $this->get('/api/stats/viral-posts');
+        $yesterday = now()->subDays(2)->toDateString();
+        $now = now()->toDateString();
 
+        $response = $this->get('/api/stats/viral-posts?' . http_build_query([
+                'from' => $yesterday,
+                'to' => $now,
+            ]));
         $response->assertOk();
 
         $response->assertJsonPath('0.id', $highScorePost->id);

@@ -52,14 +52,21 @@ class StatsService
             ->orderByDesc('count')
             ->get();
     }
-
-    public function getViralPosts()
+    
+    public function getViralPosts(string $from, string $to)
     {
         return Post::query()
+            ->whereBetween('created_at', [$from, $to])
             ->select('id')
             ->selectRaw('((likes * 2) + (shares * 5) + views) / 10.0 as viral_score')
             ->orderBy('viral_score', 'desc')
             ->get();
+    }
 
+    public function getUserGrowth(string $range, string $from, string $to)
+    {
+        return User::query()
+            ->whereBetween('created_at', [$from, $to])
+            ->count();
     }
 }
