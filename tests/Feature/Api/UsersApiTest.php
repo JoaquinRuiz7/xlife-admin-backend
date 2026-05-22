@@ -21,7 +21,7 @@ class UsersApiTest extends TestCase
         User::factory()->count(3)->create([
             'country_id' => $country->id,
         ]);
-        $response = $this->getJson('/api/users');
+        $response = $this->getJson('/api/users?withLastIp=1');
         $response
             ->assertOk()
             ->assertJsonStructure([
