@@ -16,7 +16,7 @@ class ViralPostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'viralScore' => $this->viralScore
+            'viralScore' => $this->viralScore,
         ];
     }
 }

@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             BlockedIpSeeder::class,
             BlockedPhoneSeeder::class,
             GlobalSecuritySettingSeeder::class,
+            SessionSeeder::class,
         ]);
     }
 }

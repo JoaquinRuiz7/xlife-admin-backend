@@ -22,6 +22,9 @@ class UserService
                         ->orWhere('email', 'like', "%{$search}%");
                 });
             })
+            ->when($filters['withLastIp'] ?? null, function ($query, string $withLastIp) {
+                $query->with('lastSession');
+            })
             ->paginate(
                 perPage: $filters['pageSize'] ?? 25,
                 page: $filters['page'] ?? 1

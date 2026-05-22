@@ -33,6 +33,7 @@ class UsersApiTest extends TestCase
                         'cellphone',
                         'country',
                         'lastActive',
+                        'lastKnownIp',
                     ],
                 ],
                 'meta' => [
