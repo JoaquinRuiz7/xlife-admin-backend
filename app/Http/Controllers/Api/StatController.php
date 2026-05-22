@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helper\PaginatedResponse;
 use App\Http\Requests\GetUserGrowthRequest;
-use App\Http\Requests\RangedRequest;
+use App\Http\Requests\ViralPostsRequest;
+use App\Http\Resources\ViralPostResource;
 use App\Services\StatsService;
 use Illuminate\Http\Response;
 
 class StatController extends Controller
 {
     //
-    public function __construct(private readonly StatsService $statsService) {}
+    public function __construct(private readonly StatsService $statsService)
+    {
+    }
 
     /**
      * @OA\Get(
@@ -113,11 +117,11 @@ class StatController extends Controller
      *     )
      * )
      */
-    public function getViralScoresForPosts(RangedRequest $rangedRequest)
+    public function getViralScoresForPosts(ViralPostsRequest $paginationParams)
     {
-        $rangeDates = $rangedRequest->validated();
+        $paginationOptions = $paginationParams->validated();
 
-        return response($this->statsService->getViralPosts($rangeDates['from'], $rangeDates['to']), Response::HTTP_OK);
+        return PaginatedResponse::make($this->statsService->getViralPosts($paginationOptions), ViralPostResource::class);
     }
 
     /**

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RangedRequest extends FormRequest
+class ViralPostsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class RangedRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'from' => 'required|date|date_format:Y-m-d',
-            'to' => 'required|date|date_format:Y-m-d',
+            'page' => 'required|int|min:1',
+            'pageSize' => 'required|int|max:100',
         ];
     }
 }
