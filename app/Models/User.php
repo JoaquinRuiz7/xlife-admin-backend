@@ -69,6 +69,4 @@ class User extends Authenticatable
         return $this->hasOne(Session::class, 'user_id')
             ->latestOfMany('last_activity');
     }
-
-
 }
