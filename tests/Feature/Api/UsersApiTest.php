@@ -21,7 +21,7 @@ class UsersApiTest extends TestCase
         User::factory()->count(3)->create([
             'country_id' => $country->id,
         ]);
-        $response = $this->getJson('/api/users');
+        $response = $this->getJson('/api/users?withLastIp=1');
         $response
             ->assertOk()
             ->assertJsonStructure([
@@ -191,7 +191,7 @@ class UsersApiTest extends TestCase
         $response = $this->getJson("/api/users/{$user->id}/activity");
 
         $expected = collect(range(0, 23))
-            ->map(fn (int $hour) => [
+            ->map(fn(int $hour) => [
                 'hour' => $hour,
                 'minutes' => match ($hour) {
                     10 => 26,
