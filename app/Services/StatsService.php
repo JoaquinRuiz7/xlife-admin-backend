@@ -56,6 +56,7 @@ class StatsService
     public function getViralPosts(array $paginationOptions)
     {
         return Post::query()
+            ->whereBetween('created_at', [$paginationOptions['from'], $paginationOptions['to']])
             ->select('id')
             ->selectRaw('((likes * 2) + (shares * 5) + views) / 10.0 as viralScore')
             ->orderBy('viralScore', 'desc')

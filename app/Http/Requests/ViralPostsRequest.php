@@ -22,6 +22,8 @@ class ViralPostsRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'from' => 'required|date|date_format:Y-m-d',
+            'to' => 'required|date|date_format:Y-m-d',
             'page' => 'required|int|min:1',
             'pageSize' => 'required|int|max:100',
         ];
