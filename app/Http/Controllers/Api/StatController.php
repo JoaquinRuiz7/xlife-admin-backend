@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helper\PaginatedResponse;
 use App\Http\Requests\GetUserGrowthRequest;
-use App\Http\Requests\RangedRequest;
+use App\Http\Requests\ViralPostsRequest;
+use App\Http\Resources\ViralPostResource;
 use App\Services\StatsService;
 use Illuminate\Http\Response;
 
 class StatController extends Controller
 {
     //
-    public function __construct(private readonly StatsService $statsService) {}
+    public function __construct(private readonly StatsService $statsService)
+    {
+    }
 
     /**
      * @OA\Get(
@@ -43,7 +47,7 @@ class StatController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/stats/geographic-distribution",
+     *     path="/api/stats/geographic",
      *     summary="Get user geographical distribution grouped by country",
      *     tags={"Stats"},
      *
@@ -71,7 +75,8 @@ class StatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/stats/viral-posts",
-     *     summary="Get user growth grouped by period",
+     *     summary="Get viral posts",
+     *     description="Returns a paginated list of posts ordered by viral score for a given date range.",
      *     tags={"Stats"},
      *
      *     @OA\Parameter(
@@ -79,7 +84,6 @@ class StatController extends Controller
      *         in="query",
      *         required=true,
      *         description="Start date",
-     *
      *         @OA\Schema(type="string", format="date", example="2026-05-01")
      *     ),
      *
@@ -88,21 +92,46 @@ class StatController extends Controller
      *         in="query",
      *         required=true,
      *         description="End date",
-     *
      *         @OA\Schema(type="string", format="date", example="2026-05-31")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=true,
+     *         description="Pagination page number",
+     *         @OA\Schema(type="integer", minimum=1, example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="pageSize",
+     *         in="query",
+     *         required=true,
+     *         description="Number of viral posts per page. Maximum value is 100.",
+     *         @OA\Schema(type="integer", minimum=1, maximum=100, example=25)
      *     ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Viral posts for a given date range.",
-     *
+     *         description="Paginated viral posts for a given date range.",
      *         @OA\JsonContent(
-     *             type="array",
-     *
-     *             @OA\Items(
-     *
-     *                 @OA\Property(property="id", type="integer", example="1"),
-     *                 @OA\Property(property="viralScore", type="double", example=1251.8)
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=75),
+     *                     @OA\Property(property="viralScore", type="number", format="float", example=1319.0)
+     *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="meta",
+     *                 type="object",
+     *                 @OA\Property(property="total", type="integer", example=198),
+     *                 @OA\Property(property="page", type="integer", example=1),
+     *                 @OA\Property(property="pageSize", type="integer", example=25),
+     *                 @OA\Property(property="lastPage", type="integer", example=8)
      *             )
      *         )
      *     ),
@@ -113,11 +142,14 @@ class StatController extends Controller
      *     )
      * )
      */
-    public function getViralScoresForPosts(RangedRequest $rangedRequest)
+    public function getViralScoresForPosts(ViralPostsRequest $paginationParams)
     {
-        $rangeDates = $rangedRequest->validated();
+        $paginationOptions = $paginationParams->validated();
 
-        return response($this->statsService->getViralPosts($rangeDates['from'], $rangeDates['to']), Response::HTTP_OK);
+        return PaginatedResponse::make(
+            $this->statsService->getViralPosts($paginationOptions),
+            ViralPostResource::class
+        );
     }
 
     /**
