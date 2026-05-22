@@ -13,7 +13,9 @@ use Illuminate\Http\Response;
 class StatController extends Controller
 {
     //
-    public function __construct(private readonly StatsService $statsService) {}
+    public function __construct(private readonly StatsService $statsService)
+    {
+    }
 
     /**
      * @OA\Get(
@@ -82,7 +84,6 @@ class StatController extends Controller
      *         in="query",
      *         required=true,
      *         description="Start date",
-     *
      *         @OA\Schema(type="string", format="date", example="2026-05-01")
      *     ),
      *
@@ -91,7 +92,6 @@ class StatController extends Controller
      *         in="query",
      *         required=true,
      *         description="End date",
-     *
      *         @OA\Schema(type="string", format="date", example="2026-05-31")
      *     ),
      *
