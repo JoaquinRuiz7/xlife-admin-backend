@@ -52,7 +52,7 @@ Route::group(['prefix' => '/security'], function () {
 
 Route::group(['prefix' => '/stats'], function () {
     Route::get('/overview', [StatController::class, 'getOverView']);
-    Route::get('/geographic-distribution', [StatController::class, 'getGeographicDistribution']);
+    Route::get('/geographic', [StatController::class, 'getGeographicDistribution']);
     Route::get('/viral-posts', [StatController::class, 'getViralScoresForPosts']);
     Route::get('/user-growth', [StatController::class, 'getUserGrowth']);
 });

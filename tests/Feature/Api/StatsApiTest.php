@@ -69,7 +69,7 @@ class StatsApiTest extends TestCase
                 'country_id' => $italy->id,
             ]);
 
-        $response = $this->get('/api/stats/geographic-distribution');
+        $response = $this->get('/api/stats/geographic');
 
         $response->assertOk();
 

@@ -1080,13 +1080,13 @@
                 }
             }
         },
-        "/api/stats/geographic-distribution": {
+        "/api/stats/geographic": {
             "get": {
                 "tags": [
                     "Stats"
                 ],
                 "summary": "Get user geographical distribution grouped by country",
-                "operationId": "3bfd2fa8e4b101bc86d2cff187518d10",
+                "operationId": "b6e75d5b890c90ad3987c1aea5da7353",
                 "responses": {
                     "200": {
                         "description": "Geographical distribution grouped by country.",
@@ -1119,7 +1119,8 @@
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get user growth grouped by period",
+                "summary": "Get viral posts",
+                "description": "Returns a paginated list of posts ordered by viral score for a given date range.",
                 "operationId": "bc8cad323957ceee9c86b1810f3f5e33",
                 "parameters": [
                     {
@@ -1143,29 +1144,78 @@
                             "format": "date",
                             "example": "2026-05-31"
                         }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Pagination page number",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of viral posts per page. Maximum value is 100.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "example": 25
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Viral posts for a given date range.",
+                        "description": "Paginated viral posts for a given date range.",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": "1"
-                                            },
-                                            "viralScore": {
-                                                "type": "number",
-                                                "format": "double",
-                                                "example": 1251.8
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 75
+                                                    },
+                                                    "viralScore": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 1319
+                                                    }
+                                                },
+                                                "type": "object"
                                             }
                                         },
-                                        "type": "object"
-                                    }
+                                        "meta": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 198
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "pageSize": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "lastPage": {
+                                                    "type": "integer",
+                                                    "example": 8
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
