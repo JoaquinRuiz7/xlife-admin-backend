@@ -15,12 +15,8 @@ class ReportSeeder extends Seeder
     {
         $users = User::query()->get();
 
-        if ($users->count() < 2) {
-            $users = User::factory()->count(10)->create();
-        }
-
         Report::factory()
-            ->count(500)
+            ->count(80)
             ->make()
             ->each(function (Report $report) use ($users) {
                 $reporter = $users->random();

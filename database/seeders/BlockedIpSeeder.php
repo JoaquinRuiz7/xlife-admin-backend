@@ -15,7 +15,7 @@ class BlockedIpSeeder extends Seeder
     {
         $countries = Country::query()->get();
         BlockedIp::factory()
-            ->count(100)
+            ->count(20)
             ->create([
                 'country_id' => fn () => $countries->random()->id,
             ]);
