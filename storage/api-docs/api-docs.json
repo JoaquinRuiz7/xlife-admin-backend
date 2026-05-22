@@ -1309,7 +1309,7 @@
                     "Users"
                 ],
                 "summary": "Get users",
-                "description": "Returns a paginated list of users. Results can be filtered by status and searched by text.",
+                "description": "Returns a paginated list of users. Results can be filtered by status, searched by text, and optionally include the user's last known IP.",
                 "operationId": "bf42b0b095c434a93b56840f678b0afc",
                 "parameters": [
                     {
@@ -1361,6 +1361,21 @@
                             "minimum": 1,
                             "example": 25
                         }
+                    },
+                    {
+                        "name": "withLastIp",
+                        "in": "query",
+                        "description": "Whether to include the user's last known IP address.",
+                        "required": false,
+                        "schema": {
+                            "description": "0 = false, 1 = true",
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ],
+                            "example": 1
+                        }
                     }
                 ],
                 "responses": {
@@ -1405,6 +1420,11 @@
                                                         "type": "string",
                                                         "format": "date-time",
                                                         "example": "2026-05-21 14:30:00",
+                                                        "nullable": true
+                                                    },
+                                                    "lastIp": {
+                                                        "type": "string",
+                                                        "example": "181.23.45.67",
                                                         "nullable": true
                                                     }
                                                 },
