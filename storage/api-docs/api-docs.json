@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Your API Title",
-        "description": "API Description",
+        "title": "Xlife admin backend",
+        "description": "Backend API designed for administrators to retrieve data.",
         "version": "1.0.0"
     },
     "servers": [

@@ -4,9 +4,9 @@ namespace App\Swagger;
 
 /**
  * @OA\Info(
- *     title="Your API Title",
+ *     title="Xlife admin backend",
  *     version="1.0.0",
- *     description="API Description"
+ *     description="Backend API designed for administrators to retrieve data."
  * )
  *
  * @OA\Server(
