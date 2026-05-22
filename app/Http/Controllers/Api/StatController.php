@@ -13,9 +13,7 @@ use Illuminate\Http\Response;
 class StatController extends Controller
 {
     //
-    public function __construct(private readonly StatsService $statsService)
-    {
-    }
+    public function __construct(private readonly StatsService $statsService) {}
 
     /**
      * @OA\Get(
@@ -84,6 +82,7 @@ class StatController extends Controller
      *         in="query",
      *         required=true,
      *         description="Start date",
+     *
      *         @OA\Schema(type="string", format="date", example="2026-05-01")
      *     ),
      *
@@ -92,6 +91,7 @@ class StatController extends Controller
      *         in="query",
      *         required=true,
      *         description="End date",
+     *
      *         @OA\Schema(type="string", format="date", example="2026-05-31")
      *     ),
      *
@@ -100,6 +100,7 @@ class StatController extends Controller
      *         in="query",
      *         required=true,
      *         description="Pagination page number",
+     *
      *         @OA\Schema(type="integer", minimum=1, example=1)
      *     ),
      *
@@ -108,19 +109,24 @@ class StatController extends Controller
      *         in="query",
      *         required=true,
      *         description="Number of viral posts per page. Maximum value is 100.",
+     *
      *         @OA\Schema(type="integer", minimum=1, maximum=100, example=25)
      *     ),
      *
      *     @OA\Response(
      *         response=200,
      *         description="Paginated viral posts for a given date range.",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="data",
      *                 type="array",
+     *
      *                 @OA\Items(
      *                     type="object",
+     *
      *                     @OA\Property(property="id", type="integer", example=75),
      *                     @OA\Property(property="viralScore", type="number", format="float", example=1319.0)
      *                 )
