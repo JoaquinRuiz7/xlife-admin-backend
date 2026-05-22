@@ -29,8 +29,8 @@ class StatsApiTest extends TestCase
             ->count(10)
             ->create([
                 'status' => ReportStatus::PENDING,
-                'user_id' => fn () => $users->random()->id,
-                'reported_user_id' => fn (array $attributes) => $users
+                'user_id' => fn() => $users->random()->id,
+                'reported_user_id' => fn(array $attributes) => $users
                     ->where('id', '!=', $attributes['user_id'])
                     ->random()
                     ->id,
@@ -69,7 +69,7 @@ class StatsApiTest extends TestCase
                 'country_id' => $italy->id,
             ]);
 
-        $response = $this->get('/api/stats/geographic-distribution');
+        $response = $this->get('/api/stats/geographic');
 
         $response->assertOk();
 
@@ -99,8 +99,6 @@ class StatsApiTest extends TestCase
             'shares' => 1,
             'created_at' => now()->subDay(),
         ]);
-        // (10 * 2) + (1 * 5) + 100
-        // 20 + 5 + 100 = 125/10 = 12.5
 
         $highScorePost = Post::factory()->create([
             'user_id' => $user->id,
@@ -109,22 +107,28 @@ class StatsApiTest extends TestCase
             'shares' => 20,
             'created_at' => now()->subDay(),
         ]);
-        // (100 * 2) + (20 * 5) + 1000
-        // 200 + 100 + 1000 = 1300 / 10 = 130
-        $yesterday = now()->subDays(3)->toDateString();
-        $now = now()->toDateString();
 
-        $response = $this->get('/api/stats/viral-posts?'.http_build_query([
-            'from' => $yesterday,
-            'to' => $now,
-        ]));
+        $threeDaysAgo = now()->subDays(3)->toDateString();
+        $now = now()->toDateString();
+        $response = $this->getJson('/api/stats/viral-posts?' . http_build_query([
+                'page' => 1,
+                'pageSize' => 10,
+                'from' => $threeDaysAgo,
+                'to' => $now,
+            ]));
+
         $response->assertOk();
 
-        $response->assertJsonPath('0.id', $highScorePost->id);
-        $response->assertJsonPath('1.id', $lowScorePost->id);
+        $response->assertJsonPath('data.0.id', $highScorePost->id);
+        $response->assertJsonPath('data.1.id', $lowScorePost->id);
 
-        $response->assertJsonPath('0.viralScore', 130);
-        $response->assertJsonPath('1.viralScore', 12.5);
+        $this->assertEquals(130, $response->json('data.0.viralScore'));
+        $this->assertEquals(12.5, $response->json('data.1.viralScore'));
+
+        $response->assertJsonPath('meta.total', 2);
+        $response->assertJsonPath('meta.page', 1);
+        $response->assertJsonPath('meta.pageSize', 10);
+        $response->assertJsonPath('meta.lastPage', 1);
     }
 
     public function test_get_user_growth_grouped_by_month(): void
@@ -152,11 +156,11 @@ class StatsApiTest extends TestCase
                 'created_at' => '2026-07-01 10:00:00',
             ]);
 
-        $response = $this->getJson('/api/stats/user-growth?'.http_build_query([
-            'groupBy' => 'month',
-            'from' => '2026-05-01',
-            'to' => '2026-06-30',
-        ]));
+        $response = $this->getJson('/api/stats/user-growth?' . http_build_query([
+                'groupBy' => 'month',
+                'from' => '2026-05-01',
+                'to' => '2026-06-30',
+            ]));
 
         $response->assertOk();
 
@@ -190,11 +194,11 @@ class StatsApiTest extends TestCase
                 'created_at' => '2026-05-21 10:00:00',
             ]);
 
-        $response = $this->getJson('/api/stats/user-growth?'.http_build_query([
-            'groupBy' => 'day',
-            'from' => '2026-05-20',
-            'to' => '2026-05-21',
-        ]));
+        $response = $this->getJson('/api/stats/user-growth?' . http_build_query([
+                'groupBy' => 'day',
+                'from' => '2026-05-20',
+                'to' => '2026-05-21',
+            ]));
 
         $response->assertOk();
 

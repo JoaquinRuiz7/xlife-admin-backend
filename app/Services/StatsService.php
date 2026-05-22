@@ -53,14 +53,17 @@ class StatsService
             ->get();
     }
 
-    public function getViralPosts(string $from, string $to)
+    public function getViralPosts(array $paginationOptions)
     {
         return Post::query()
-            ->whereBetween('created_at', [$from, $to])
+            ->whereBetween('created_at', [$paginationOptions['from'], $paginationOptions['to']])
             ->select('id')
             ->selectRaw('((likes * 2) + (shares * 5) + views) / 10.0 as viralScore')
             ->orderBy('viralScore', 'desc')
-            ->get();
+            ->paginate(
+                perPage: $paginationOptions['pageSize'] ?? 25,
+                page: $paginationOptions['page'] ?? 1
+            );
     }
 
     public function getUserGrowth(string $groupBy, string $from, string $to)
