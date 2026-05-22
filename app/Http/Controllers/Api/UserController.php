@@ -19,7 +19,7 @@ class UserController extends Controller
      * @OA\Get(
      *     path="/api/users",
      *     summary="Get users",
-     *     description="Returns a paginated list of users. Results can be filtered by status and searched by text.",
+     *     description="Returns a paginated list of users. Results can be filtered by status, searched by text, and optionally include the user's last known IP.",
      *     tags={"Users"},
      *
      *     @OA\Parameter(
@@ -41,7 +41,11 @@ class UserController extends Controller
      *         required=false,
      *         description="Search users by name, email, or related searchable fields",
      *
-     *         @OA\Schema(type="string", maxLength=255, example="john")
+     *         @OA\Schema(
+     *             type="string",
+     *             maxLength=255,
+     *             example="john"
+     *         )
      *     ),
      *
      *     @OA\Parameter(
@@ -50,7 +54,11 @@ class UserController extends Controller
      *         required=false,
      *         description="Pagination page number",
      *
-     *         @OA\Schema(type="integer", minimum=1, example=1)
+     *         @OA\Schema(
+     *             type="integer",
+     *             minimum=1,
+     *             example=1
+     *         )
      *     ),
      *
      *     @OA\Parameter(
@@ -59,7 +67,26 @@ class UserController extends Controller
      *         required=false,
      *         description="Number of users per page. Maximum value is 100.",
      *
-     *         @OA\Schema(type="integer", minimum=1, maximum=100, example=25)
+     *         @OA\Schema(
+     *             type="integer",
+     *             minimum=1,
+     *             maximum=100,
+     *             example=25
+     *         )
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="withLastIp",
+     *         in="query",
+     *         required=false,
+     *         description="Whether to include the user's last known IP address.",
+     *
+     *         @OA\Schema(
+     *              type="integer",
+     *              enum={0, 1},
+     *              example=1,
+     *              description="0 = false, 1 = true"
+     *          )
      *     ),
      *
      *     @OA\Response(
@@ -82,7 +109,8 @@ class UserController extends Controller
      *                     @OA\Property(property="cellphone", type="string", nullable=true, example="+59899123456"),
      *                     @OA\Property(property="country", type="string", nullable=true, example="Uruguay"),
      *                     @OA\Property(property="status", type="string", example="active"),
-     *                     @OA\Property(property="lastLoginAt", type="string", format="date-time", nullable=true, example="2026-05-21 14:30:00")
+     *                     @OA\Property(property="lastLoginAt", type="string", format="date-time", nullable=true, example="2026-05-21 14:30:00"),
+     *                     @OA\Property(property="lastIp", type="string", nullable=true, example="181.23.45.67")
      *                 )
      *             ),
      *             @OA\Property(

@@ -110,12 +110,12 @@ class StatsApiTest extends TestCase
 
         $threeDaysAgo = now()->subDays(3)->toDateString();
         $now = now()->toDateString();
-        $response = $this->getJson('/api/stats/viral-posts?' . http_build_query([
-                'page' => 1,
-                'pageSize' => 10,
-                'from' => $threeDaysAgo,
-                'to' => $now,
-            ]));
+        $response = $this->getJson('/api/stats/viral-posts?'.http_build_query([
+            'page' => 1,
+            'pageSize' => 10,
+            'from' => $threeDaysAgo,
+            'to' => $now,
+        ]));
 
         $response->assertOk();
 
