@@ -18,6 +18,7 @@ class GetUsersRequest extends FormRequest
             'search' => ['nullable', 'string', 'max:255'],
             'page' => ['nullable', 'integer', 'min:1'],
             'pageSize' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'withLastIp' => ['nullable', 'boolean'],
         ];
     }
 }

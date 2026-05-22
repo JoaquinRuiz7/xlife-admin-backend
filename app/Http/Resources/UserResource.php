@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             'country' => $this->country->name,
             'registered' => $this->created_at,
             'lastActive' => $this->last_login_at?->diffForHumans(),
-            'lastKnownIp' => $this->ip_address,
+            'lastKnownIp' => $this->lastSession?->ip_address,
         ];
     }
 }
