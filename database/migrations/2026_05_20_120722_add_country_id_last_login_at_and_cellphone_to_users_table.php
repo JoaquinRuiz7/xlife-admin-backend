@@ -4,20 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('cellphone')->unique()->after('password');
-            $table->integer('country_id')
-                ->after('cellphone');
-            $table->foreign('country_id')
-                ->references('id')
-                ->on('countries')
+            $table->string('cellphone')
+                ->unique()
+                ->after('password');
+            $table->foreignId('country_id')
+                ->after('cellphone')
+                ->constrained('countries')
                 ->restrictOnDelete();
             $table->dateTime('last_login_at')
                 ->nullable()
