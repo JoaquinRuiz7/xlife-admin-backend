@@ -1,0 +1,52 @@
+services:
+    xlife-admin:
+        build:
+            context: .
+            dockerfile: ./docker/php/Dockerfile
+        env_file:
+            - .env
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - laravel
+
+    nginx:
+        image: nginx:1.27-alpine
+        container_name: laravel_nginx
+        ports:
+            - "8000:80"
+        volumes:
+            - ./:/var/www/html:ro
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+        depends_on:
+            - xlife-admin
+        networks:
+            - laravel
+
+    db:
+        image: mysql:8.4
+        container_name: laravel_db
+        environment:
+            MYSQL_DATABASE: laravel
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
+        volumes:
+            - db_data:/var/lib/mysql
+        networks:
+            - laravel
+        healthcheck:
+            test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot" ]
+            interval: 5s
+            timeout: 5s
+            retries: 20
+
+volumes:
+    db_data:
+
+networks:
+    laravel:
+        driver: bridge
